@@ -1,0 +1,741 @@
+\PassOptionsToPackage{usenames,dvipsnames}{xcolor}
+
+\documentclass[
+	draft=false,
+	paper=a4,
+	fontsize=12pt,
+	pagesize=auto,
+	twoside=false,
+	headings=small,openany,
+	chapterprefix=false, 
+	version=last,
+	titlepage=true,
+	parskip=half+,
+	mpinclude=false,
+	headsepline=true,
+	toc=bibliography,
+	toc=index,
+	numbers=noendperiod
+]{scrbook}
+
+\usepackage[usestackEOL]{stackengine}
+\usepackage{url}
+\usepackage{tocloft}
+\usepackage{blindtext}
+
+\usepackage{appendix}
+\usepackage{todonotes}
+\usepackage[cmex10]{amsmath}
+%side by side tables with seperate captions: \RawFloats
+\usepackage{floatrow}
+%reference with "Table" infront of 3.1: \cref{}
+\usepackage{cleveref}
+
+\newcommand*{\appendixmore}{% S KOMA Doku S 339 
+ \renewcommand*{\chapterformat}{ 
+\appendixname~\thechapter\autodot\enskip} 
+  \renewcommand*{\chaptermarkformat}{
+\appendixname~\thechapter\autodot\enskip}} 
+
+% Gruener Haken
+\usepackage{rotating}
+\newcommand*\rot{\rotatebox{270}}
+\newcommand{\myGreen}[1]{{\color[RGB]{0,166,79}#1}}
+\newcommand{\cmark}{\rot{\myGreen{$\checkmark$}}}%
+\newcommand{\inmark}{\myGreen{$\checkmark$}}%
+
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+
+\fancypagestyle{plain}{
+	\fancyhf{}
+
+	\fancyhead[LE,RO]{\nouppercase{\leftmark}}
+	\fancyhead[RE,LO]{}
+	\fancyfoot[CE,CO]{}
+	\fancyfoot[LE,RO]{\thepage}
+	\renewcommand{\headrulewidth}{.4pt}
+	\renewcommand{\footrulewidth}{.4pt}
+}
+\fancypagestyle{main}{
+	\fancyhf{}
+
+	\fancyhead[LE,RO]{\nouppercase{\leftmark}}
+	\fancyhead[RE,LO]{}
+	\fancyfoot[CE,CO]{}
+	\fancyfoot[LE,RO]{\thepage}
+	\renewcommand{\headrulewidth}{.4pt}
+	\renewcommand{\footrulewidth}{.4pt}
+}
+\fancypagestyle{end}{
+	\fancyhf{}
+
+	\fancyhead[LE,RO]{\nouppercase{\leftmark}}
+	\fancyhead[RE,LO]{}
+	\fancyfoot[CE,CO]{}
+	\fancyfoot[LE,RO]{\thepage}
+	\renewcommand{\headrulewidth}{.4pt}
+	\renewcommand{\footrulewidth}{.4pt}
+}
+\appto\frontmatter{\pagestyle{plain}}
+\appto\mainmatter{\pagestyle{main}}
+\appto\backmatter{\pagestyle{end}}
+
+% hacks
+\usepackage{scrhack} 
+\usepackage{floatrow}
+
+\usepackage[left=3.5cm,right=2.5cm,top=2.5cm,bottom=2cm,includeheadfoot]{geometry}
+\linespread{1.5} 
+
+% Seitenrand für Korrektur
+%\geometry{
+%	left=2cm,
+%  right=4.5cm
+%}
+
+%
+% Textcodierung 
+%
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[full]{textcomp}
+\usepackage{newtxtext,newtxmath,newtxtt}
+\usepackage{courier}
+
+\usepackage[babel]{microtype}
+\usepackage{ellipsis}
+\usepackage{setspace}
+
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+% Nachfolgende Befehle schließen "Schusterjungen und Hurenkinder" aus.
+\clubpenalty = 10000
+\widowpenalty = 10000
+\displaywidowpenalty = 10000
+
+%
+% Einstellungen für deutsche Texte
+\usepackage[autostyle,babel,german=quotes,english=american]{csquotes}
+\usepackage[USenglish,ngerman]{babel} 
+\selectlanguage{ngerman}
+
+%
+% Schriftstile einstellen
+\setkomafont{sectioning}{\rmfamily\bfseries}
+\setkomafont{title}{\normalfont\rmfamily}
+\setkomafont{descriptionlabel}{\rmfamily}
+\setkomafont{caption}{\small\itshape} 
+\setkomafont{pageheadfoot}{\normalfont\normalcolor\footnotesize}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+
+
+
+%
+% Zitieren und Literaturverzeichnis mit biblatex
+% Hinweis: UTF8 verlangt nach biber statt bibtex8
+%\iffalse
+\usepackage[%
+ backend=bibtex8,%
+ style=alphabetic,%
+ bibstyle=alphabetic,%
+ citestyle=authoryear,%
+ natbib=false,%
+ sorting=anyt,%
+ sortcites=true,%
+ hyperref=auto,%
+ maxnames=10,%
+ minnames=1%
+ %dashed=false%
+]{biblatex}
+%\fi
+
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
+
+% Quellenverzeichnisse
+\addbibresource{bib/bib_articles.bib}
+\addbibresource{bib/bib_online.bib}
+\addbibresource{bib/bib_books.bib}
+
+\setlength{\bibitemsep}{1em}
+\DefineBibliographyStrings{ngerman}{andothers = {u.\,a.},}
+
+
+%
+% Programmcode
+\usepackage{listings}
+\usepackage{diagbox,array,graphicx,amssymb}
+\usepackage[usenames,dvipsnames]{xcolor}
+
+\definecolor{anti-flashwhite}{rgb}{0.95, 0.95, 0.96}
+\definecolor{lightgray}{rgb}{.9,.9,.9}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{forestGreen}{RGB}{34,139,34}
+\definecolor{orangeRed}{RGB}{255,69,0}
+\definecolor{ghostwhite}{rgb}{0.97, 0.97, 1.0}
+\definecolor{snow}{rgb}{1.0, 0.98, 0.98}
+\definecolor{splashedwhite}{rgb}{1.0, 0.99, 1.0}
+\definecolor{whitesmoke}{rgb}{0.96, 0.96, 0.96}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% CODE LISTINGS
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Define Language
+
+%
+% JAVA CODE
+%
+
+%JavaScript
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+%%% PKCE GET
+\lstdefinelanguage{PKCE}
+{
+	alsoletter={\\,/,\.,\-},
+  % list of keywords
+	  morekeywords={
+		HTTP/1.1,
+		GET,
+		POST,
+		Date,
+		Location,
+		Content-Type,
+		Content-Length,
+		Connection
+  },
+	morecomment=[s]{?code}{\~\~},
+	morecomment=[s]{?code_challange}{j5U},
+	morecomment=[s]{code_verifier}{GOQ},
+	morecomment=[s]{?code_challenge_method}{\~\~},
+	morecomment=[s]{\&code}{\~\~},
+	morestring=[b]"',
+	morecomment=[s]{\"access}{..\"},
+	morecomment=[s]{\"refresh}{..\"},
+	morecomment=[s]{\"Authorization}{..\"},
+  sensitive=true, % keywords are not case-sensitive
+	captionpos=b,
+	basicstyle=\fontsize{8}{10}\selectfont\ttfamily,
+	showstringspaces=false,
+	numbers=left,
+	numberstyle=\tiny,
+	tabsize=2,
+	numbersep=3pt,
+	extendedchars=true,
+	xleftmargin=2em,
+	lineskip=1pt,
+	breaklines,
+	%Coloring
+	backgroundcolor=\color{splashedwhite},
+	identifierstyle=\color{black}\ttfamily,
+	stringstyle=\color{black}\ttfamily,
+	commentstyle=\color{blue}\ttfamily
+}
+%%%
+
+\lstdefinelanguage{POST}
+{
+  % list of keywords
+  morekeywords={
+		grant_type,
+		code,
+		client_assertion,
+		client_assertion_type,
+		code_verifier,
+		client_id
+  },
+  sensitive=false, % keywords are not case-sensitive
+  morestring=[b]", % defines that strings are enclosed in double quotes
+	morestring=[b]:,
+	morestring=[b]=,
+	captionpos=b,
+	basicstyle=\fontsize{8}{10}\selectfont\ttfamily,
+	showstringspaces=false,
+	numbers=left,
+	numberstyle=\tiny,
+	tabsize=2,
+	numbersep=3pt,
+	extendedchars=true,
+	xleftmargin=2em,
+	lineskip=1pt,
+	breaklines,
+	%Coloring
+	backgroundcolor=\color{splashedwhite},
+	identifierstyle=\color{blue}\ttfamily,
+	stringstyle=\color{black}\ttfamily,
+	commentstyle=\color{forestGreen}\ttfamily
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\lstdefinelanguage{HTTP32}
+{
+	alsoletter=-,
+  % list of keywords
+	  morekeywords={
+		POST,
+		Host,
+		SAMLart,
+		RelayState,
+		User-Agent,
+		Content-Type,
+		Content-Length,
+		Parameter
+  },
+	morecomment=[s]{AAQ}{An},	
+  sensitive=false, % keywords are not case-sensitive
+	captionpos=b,
+	basicstyle=\fontsize{8}{10}\selectfont\ttfamily,
+	showstringspaces=false,
+	numbers=left,
+	numberstyle=\tiny,
+	tabsize=2,
+	numbersep=3pt,
+	extendedchars=true,
+	xleftmargin=2em,
+	lineskip=1pt,
+	breaklines,
+	%Coloring
+	backgroundcolor=\color{splashedwhite},
+	identifierstyle=\color{black}\ttfamily,
+	stringstyle=\color{black}\ttfamily,
+	commentstyle=\color{blue}\ttfamily
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\lstdefinelanguage{HTTP31}
+{
+	alsoletter=-,
+  % list of keywords
+	  morekeywords={
+		POST,
+		Host,
+		SAMLart,
+		RelayState,
+		User-Agent,
+		Content-Type,
+		Content-Length,
+		Parameter
+  },
+	morecomment=[s]{PHN}{dD4},	
+  sensitive=false, % keywords are not case-sensitive
+	captionpos=b,
+	basicstyle=\fontsize{8}{10}\selectfont\ttfamily,
+	showstringspaces=false,
+	numbers=left,
+	numberstyle=\tiny,
+	tabsize=2,
+	numbersep=3pt,
+	extendedchars=true,
+	xleftmargin=2em,
+	lineskip=1pt,
+	breaklines,
+	%Coloring
+	backgroundcolor=\color{splashedwhite},
+	identifierstyle=\color{black}\ttfamily,
+	stringstyle=\color{black}\ttfamily,
+	commentstyle=\color{blue}\ttfamily
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\lstdefinelanguage{HTTPget302}
+{
+	alsoletter={\\,/,\.,\-},
+  % list of keywords
+	  morekeywords={
+		HTTP/1.1,
+		Date,
+		Location,
+		Content-Type
+  },
+	morecomment=[s]{BLD}{bB6},	
+	morecomment=[s]{PHNhu}{VzdD4},
+  sensitive=true, % keywords are not case-sensitive
+	captionpos=b,
+	basicstyle=\fontsize{8}{10}\selectfont\ttfamily,
+	showstringspaces=false,
+	numbers=left,
+	numberstyle=\tiny,
+	tabsize=2,
+	numbersep=3pt,
+	extendedchars=true,
+	xleftmargin=2em,
+	lineskip=1pt,
+	breaklines,
+	%Coloring
+	backgroundcolor=\color{splashedwhite},
+	identifierstyle=\color{black}\ttfamily,
+	stringstyle=\color{black}\ttfamily,
+	commentstyle=\color{blue}\ttfamily
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\lstdefinelanguage{302OAuth}
+{
+	alsoletter={\\,/,\.,\-},
+  % list of keywords
+	  morekeywords={
+		HTTP/1.1,
+		GET,
+		POST,
+		Date,
+		Location,
+		Content-Type,
+		Content-Length,
+		Connection
+  },
+	morecomment=[s]{https}{callback},
+	morecomment=[s]{?code}{\~\~},
+	morecomment=[s]{\&code}{\~\~},
+	morestring=[b]"',
+	morecomment=[s]{\"access}{..\"},
+	morecomment=[s]{\"refresh}{..\"},
+	morecomment=[s]{\"Authorization}{..\"},
+  sensitive=true, % keywords are not case-sensitive
+	captionpos=b,
+	basicstyle=\fontsize{8}{10}\selectfont\ttfamily,
+	showstringspaces=false,
+	numbers=left,
+	numberstyle=\tiny,
+	tabsize=2,
+	numbersep=3pt,
+	extendedchars=true,
+	xleftmargin=2em,
+	lineskip=1pt,
+	breaklines,
+	%Coloring
+	backgroundcolor=\color{splashedwhite},
+	identifierstyle=\color{black}\ttfamily,
+	stringstyle=\color{black}\ttfamily,
+	commentstyle=\color{blue}\ttfamily
+}
+
+%%%%
+\lstdefinelanguage{302OAuthGET}
+{
+	alsoletter={\\,/,\.,\-},
+  % list of keywords
+	  morekeywords={
+		HTTP/1.1,
+		GET,
+		Host,
+		User-Agent,
+		POST,
+		Date,
+		Location,
+		Content-Type,
+		Content-Length,
+		Connection
+  },
+	morecomment=[s]{Authorization}{..},
+	morecomment=[s][\color{red}]{<!--}{-->},
+	morecomment=[s]{\&access}{...},
+  sensitive=true, % keywords are not case-sensitive
+	captionpos=b,
+	basicstyle=\fontsize{8}{10}\selectfont\ttfamily,
+	showstringspaces=false,
+	numbers=left,
+	numberstyle=\tiny,
+	tabsize=2,
+	numbersep=3pt,
+	extendedchars=true,
+	xleftmargin=2em,
+	lineskip=1pt,
+	breaklines,
+	%Coloring
+	backgroundcolor=\color{splashedwhite},
+	identifierstyle=\color{black}\ttfamily,
+	stringstyle=\color{black}\ttfamily,
+	commentstyle=\color{blue}\ttfamily
+}
+
+\lstdefinelanguage{bpel}{
+morekeywords={name,linkName,isolated,parallel,partnerLink,operation,portType,inputVariable,createInstance,
+variable,element,location,importType,partnerLinkType,myRole,messageType,properties,level,outputVariable,
+xmlns,version,encoding}
+}
+\lstdefinelanguage{xaml}{
+morekeywords={TypeArguments,Name,Default,DisplayName,OperationName,ServiceContractName,Key,AddressUri,
+CanCreateInstance, LogName, Message, MessageNumber, Expression,CorrelationHandle,Request}
+}
+
+\lstdefinestyle{workflowStyle}{
+	language=XML,
+	alsolanguage=bpel,
+	alsolanguage=xaml,
+	captionpos=b,
+%Formatting
+%basicstyle=\scriptsize,
+	basicstyle=\fontsize{8}{10}\selectfont\ttfamily,
+	sensitive=true,
+	showstringspaces=false,
+	numbers=left,
+	numberstyle=\tiny,
+	tabsize=2,
+	numbersep=3pt,
+	extendedchars=true,
+	xleftmargin=2em,
+	lineskip=1pt,
+	breaklines,
+	%Coloring
+	backgroundcolor=\color{splashedwhite},
+	morekeywords={BooleanExpression},
+	alsoletter={:,,/,?},
+	morestring=[b]{"},
+	morecomment=[s]{&lt;!--}{--&gt;},keywordstyle=\color{forestGreen},
+	identifierstyle=\color{blue}\ttfamily,
+	stringstyle=\color{orangeRed}\ttfamily,
+	commentstyle=\color{forestGreen}\ttfamily
+}
+
+\lstdefinelanguage{XML}
+{
+  morestring=[s][\color{mauve}]{"}{"},
+  morestring=[s][\color{black}]{>}{<},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s][\color{forestGreen}]{<!--}{-->},
+  stringstyle=\color{black},
+  identifierstyle=\color{lightblue},
+  keywordstyle=\color{red},
+  morekeywords={xmlns,xsi,noNamespaceSchemaLocation,type,id,x,y,source,target,version,tool,transRef,roleRef,objective,eventually}% list your attributes here
+}
+
+% 
+% PDF Erstellung steuern und Links aktivieren
+\usepackage{pdfpages}
+\usepackage[hidelinks]{hyperref} 
+% PDF \usepackage[hidelinks]{hyperref} 
+\urlstyle{rm}
+\usepackage{color}
+\definecolor{darkblue}{rgb}{0,0,.5}
+\hypersetup{%
+   pdftitle={Name, Titel},
+   pdfauthor={Vorname Name},
+   pdfstartview=FitH,
+   pdfpagelayout=OneColumn,
+   naturalnames=false,%
+   colorlinks=false,%
+	 linkcolor=black,%
+	 % Farbige Links für PDF
+	 %colorlinks=true,
+	 %linkcolor=blue,%
+   breaklinks=true,%
+   citecolor=black,%
+   filecolor=black,%
+   urlcolor=black}
+   
+%
+% Semantische Textauszeichnung
+%
+\newcommand{\meta}[1]{\texttt{#1}}
+\newcommand{\fat}[1]{\textbf{#1}} 
+\newcommand{\product}[1]{\textsc{#1}} 
+
+%
+% Figures and graphics
+% 
+\usepackage{graphicx}
+\graphicspath{/img}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{multirow}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+
+% 
+% helpful packages
+%
+\usepackage{enumerate}
+\usepackage{varioref}
+
+\newcommand{\verylongpage}{\enlargethispage{2\baselineskip}}
+\usepackage{blindtext}
+\usepackage[ngerman=ngerman-x-latest]{hyphsubst}
+\hyphenation{%
+Wirt-schafts-in-for-ma-tik
+Ge-schäfts-pro-zess-mo-dell
+Ge-schäfts-prozess-modell-ier-ung
+}
+
+%
+% Useful abbreviations
+\usepackage{xspace} 
+\newcommand{\msc}{M.\,Sc.\@\xspace}
+\newcommand{\MSc}{M.\,Sc.\@\xspace}
+\newcommand{\bsc}{B.\,Sc.\@\xspace}
+\newcommand{\BSc}{B.\,Sc.\@\xspace}
+\newcommand{\dH}{d.\,h.\@\xspace}
+
+\newenvironment{myquote}{\begin{quote} \small}{\end{quote}}
+
+\renewcommand\uppertitleback[1]{\thispagestyle{empty}#1\vfill}
+\renewcommand\lowertitleback[1]{#1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{color}
+\definecolor{shadecolor}{gray}{.70}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{xcolor}
+\usepackage[all]{hypcap}
+%\usepackage{longtable}
+
+\definecolor{light-gray}{gray}{0.85}
+
+\newmdenv[%
+backgroundcolor=light-gray,
+linecolor=light-gray,
+skipabove=1\baselineskip,
+skipbelow=1\baselineskip,
+]{shaded}
+
+\newmdenv[%
+%backgroundcolor=light-gray,
+linecolor=black,
+outerlinewidth=1pt,
+%roundcorner=2mm,
+skipabove=1\baselineskip,
+skipbelow=1\baselineskip,
+]{syntax}
+
+\usepackage{todonotes}
+
+\usepackage{acro}
+\acsetup{first-style=short}
+\DeclareAcronym{lda}{
+	short = LDA ,
+	long  = Latent Dirichlet Allocation ,
+	class = abbrev
+}
+\DeclareAcronym{dlda}{
+	short = DLDA ,
+	long  = Dynamic Latent Dirichlet Allocation ,
+	class = abbrev
+}
+\DeclareAcronym{hlda}{
+	short = HLDA ,
+	long  = Hierarchic Latent Dirichlet Allocation ,
+	class = abbrev
+}
+\DeclareAcronym{crp}{
+	short = CRP ,
+	long  = Chinese Restaurant Process ,
+	class = abbrev
+}
+\DeclareAcronym{tf-idf}{
+	short = tf-idf ,
+	long  = Term Frequency-Inverse Document Frequency ,
+	class = abbrev
+}
+\DeclareAcronym{cvt}{
+	short = CVT ,
+	long  = Continiuously Variable Transmission ,
+	class = abbrev
+}
+\DeclareAcronym{bow}{
+	short = BoW ,
+	long  = Bag-of-Words ,
+	class = abbrev
+}
+\DeclareAcronym{tdm}{
+	short = TDM ,
+	long  = Term-Dokument Matrix ,
+	class = abbrev
+}
+\DeclareAcronym{ipmi}{
+	short = IPMI ,
+	long  =  Institute of Project Management and Innovation ,
+	class = abbrev
+}
+\DeclareAcronym{gm}{
+	short = GM ,
+	long  =  General Motors ,
+	class = abbrev
+}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% TITELSEITE 1
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\thispagestyle{empty}
+\include{titlepage}
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Leere Seite 2
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\mbox{} 
+%\thispagestyle{empty}
+%\newpage
+
+
+
+\frontmatter
+\pagenumbering{Roman}
+\tableofcontents
+\clearpage \newpage
+
+\addcontentsline{toc}{section}{Abkürzungsverzeichnis}
+\printacronyms[name=Abkürzungsverzeichnis]
+\clearpage \newpage
+\addcontentsline{toc}{section}{Abbildungsverzeichnis}
+\listoffigures
+\clearpage \newpage
+\addcontentsline{toc}{section}{Tabellenverzeichnis}
+\listoftables
+\clearpage \newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Setup für Fußnoten
+\setlength{\skip\footins}{2em}		% Fußnoten um 2em nach unten versetzt
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% INHALT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mainmatter
+\pagenumbering{arabic}
+%\setcounter{page}{1}
+% Für Korrektur
+%\doublespacing
+
+\include{einleitung}
+\include{grundlagen}
+\include{untersuchung}
+\include{vergleich}
+\include{diskussion}
+\include{zusammenfassung}
+
+\backmatter
+\pagenumbering{roman}
+\include{anhang}
+\include{erklaerung}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\no{*}
+\printbibliography[heading=bibintoc,title={Literaturverzeichnis}]
+%\bibliography{bibliofile}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
