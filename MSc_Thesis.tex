@@ -29,7 +29,7 @@
 %side by side tables with seperate captions: \RawFloats
 \usepackage{floatrow}
 %reference with "Table" infront of 3.1: \cref{}
-\usepackage{cleveref}
+
 
 \newcommand*{\appendixmore}{% S KOMA Doku S 339 
  \renewcommand*{\chapterformat}{ 
@@ -168,7 +168,7 @@
 %
 % Programmcode
 \usepackage{listings}
-\usepackage{diagbox,array,graphicx,amssymb}
+\usepackage{diagbox,array,graphicx}
 \usepackage[usenames,dvipsnames]{xcolor}
 
 \definecolor{anti-flashwhite}{rgb}{0.95, 0.95, 0.96}
@@ -562,15 +562,16 @@ CanCreateInstance, LogName, Message, MessageNumber, Expression,CorrelationHandle
 %
 \usepackage{enumerate}
 \usepackage{varioref}
+\usepackage{cleveref}
 
 \newcommand{\verylongpage}{\enlargethispage{2\baselineskip}}
 \usepackage{blindtext}
-\usepackage[ngerman=ngerman-x-latest]{hyphsubst}
-\hyphenation{%
-Wirt-schafts-in-for-ma-tik
-Ge-schäfts-pro-zess-mo-dell
-Ge-schäfts-prozess-modell-ier-ung
-}
+%\usepackage[ngerman=ngerman-x-latest]{hyphsubst}
+%\hyphenation{%
+%Wirt-schafts-in-for-ma-tik
+%Ge-schäfts-pro-zess-mo-dell
+%Ge-schäfts-prozess-modell-ier-ung
+%}
 
 %
 % Useful abbreviations
@@ -615,9 +616,8 @@ skipbelow=1\baselineskip,
 ]{syntax}
 
 \usepackage{todonotes}
-
 \usepackage{acro}
-\acsetup{first-style=short}
+\acsetup{first-style=short,pages/display=all}
 \DeclareAcronym{lda}{
 	short = LDA ,
 	long  = Latent Dirichlet Allocation ,
@@ -680,6 +680,7 @@ skipbelow=1\baselineskip,
 \thispagestyle{empty}
 \include{titlepage}
 \newpage
+\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -699,7 +700,7 @@ skipbelow=1\baselineskip,
 \clearpage \newpage
 
 \addcontentsline{toc}{section}{Abkürzungsverzeichnis}
-\printacronyms[name=Abkürzungsverzeichnis]
+\printacronyms[name=Abkürzungsverzeichnis,template=tabular]
 \clearpage \newpage
 \addcontentsline{toc}{section}{Abbildungsverzeichnis}
 \listoffigures
