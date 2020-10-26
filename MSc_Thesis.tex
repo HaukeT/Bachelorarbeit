@@ -50,31 +50,26 @@
 
 \fancypagestyle{plain}{
 	\fancyhf{}
-
-	\fancyhead[LE,RO]{\nouppercase{\leftmark}}
-	\fancyhead[RE,LO]{}
-	\fancyfoot[CE,CO]{}
-	\fancyfoot[LE,RO]{\thepage}
+	
+	\renewcommand{\chaptermark}[1]{\markright{Abkürzungsverzeichnis}}
+	\fancyhead[R]{\nouppercase{\rightmark}}
+	\fancyfoot[R]{\thepage}
 	\renewcommand{\headrulewidth}{.4pt}
 	\renewcommand{\footrulewidth}{.4pt}
 }
 \fancypagestyle{main}{
 	\fancyhf{}
 
-	\fancyhead[LE,RO]{\nouppercase{\leftmark}}
-	\fancyhead[RE,LO]{}
-	\fancyfoot[CE,CO]{}
-	\fancyfoot[LE,RO]{\thepage}
+	\fancyhead[R]{\nouppercase{\leftmark}}
+	\fancyfoot[R]{\thepage}
 	\renewcommand{\headrulewidth}{.4pt}
 	\renewcommand{\footrulewidth}{.4pt}
 }
 \fancypagestyle{end}{
 	\fancyhf{}
 
-	\fancyhead[LE,RO]{\nouppercase{\leftmark}}
-	\fancyhead[RE,LO]{}
-	\fancyfoot[CE,CO]{}
-	\fancyfoot[LE,RO]{\thepage}
+	\fancyhead[R]{\nouppercase{\leftmark}}
+	\fancyfoot[R]{\thepage}
 	\renewcommand{\headrulewidth}{.4pt}
 	\renewcommand{\footrulewidth}{.4pt}
 }
@@ -616,8 +611,19 @@ skipbelow=1\baselineskip,
 ]{syntax}
 
 \usepackage{todonotes}
+\usepackage{tabu}
+\usepackage{longtable}
 \usepackage{acro}
-\acsetup{first-style=short,pages/display=all}
+\usepackage{mfirstuc}% provides \makefirstuc
+\usepackage{tocloft}
+
+\acsetup{
+	first-style=short,
+	pages/display=first,
+	list/template=lof,
+	list/heading=chapter,
+	list/name={Abkürzungsverzeichnis},
+}
 \DeclareAcronym{lda}{
 	short = LDA ,
 	long  = Latent Dirichlet Allocation ,
@@ -699,13 +705,23 @@ skipbelow=1\baselineskip,
 \tableofcontents
 \clearpage \newpage
 
-\addcontentsline{toc}{section}{Abkürzungsverzeichnis}
-\printacronyms[name=Abkürzungsverzeichnis,template=tabular]
+%\cftsetindents{entry}{indent}{numwidth}
+%\setlength\cftsecnumwidth{5em}
+
+%\phantomsection
+%\addcontentsline{toc}{chapter}{Abkürzungsverzeichnis}
+
+%\setlength{\cftsecindent}{10em}
+\cftsetindents{figure}{0em}{3.5em}
+\cftsetindents{table}{0em}{3.5em}
+\printacronyms
 \clearpage \newpage
-\addcontentsline{toc}{section}{Abbildungsverzeichnis}
+\phantomsection
+\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
 \listoffigures
 \clearpage \newpage
-\addcontentsline{toc}{section}{Tabellenverzeichnis}
+\phantomsection
+\addcontentsline{toc}{chapter}{Tabellenverzeichnis}
 \listoftables
 \clearpage \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
