@@ -3,7 +3,7 @@
 \section{Latent Dirichlet Allocation}
 \todo[inline]{Herr Möhrle hat gesagt bei längeren Zitaten, Verweis nach dem ersten Satz}
 \todo[inline]{Bei Erstverwendung einer Abkürzung (ABK) in Klammern?}
-Die \acl{lda} (\ac{lda}) ist ein generatives Wahrscheinlichkeitsmodell für Textdokumente. \parencite[vgl.][S. 996]{Blei03latentdirichlet} Dokumente werden als zufällige Mischverteilungen über latente Themen dargestellt, wobei jedes Thema eine Wahrscheinlichkeitsverteilung über Worte ist. 
+Die \acrfull{lda} ist ein generatives Wahrscheinlichkeitsmodell für Textdokumente. \parencite[vgl.][S. 996]{Blei03latentdirichlet} Dokumente werden als zufällige Mischverteilungen über latente Themen dargestellt, wobei jedes Thema eine Wahrscheinlichkeitsverteilung über Worte ist. 
 
 Vereinfacht gesagt werden alle Dokumente mit einer Wahrscheinlichkeit zu vorher unbekannten Themen zugeordnet. Die Themen werden also durch den Algorithmus gefunden. Ein Thema besteht aus der Menge aller in den Dokumenten vorkommenden Wörtern und ihrer Wahrscheinlichkeit das sie zu diesem Thema gehören.
 \todo{zitat finden}
@@ -48,7 +48,7 @@ Die Dirichletverteilungen werden mit den $\alpha$ und $\beta$ Werten beeinflusst
 
 
 \section{Dynamic Latent Dirichlet Allocation}
-Die \acl{dlda} (\ac{dlda}) ist eine Version des \ac{lda}, welche die chronologische Reihenfolge der Dokumente berücksichtigt. Dadurch ist es möglich die Veränderung der Themenschwerpunkte über den Zeitraum zu betrachten. \parencite[vgl.][]{dynamicLDA}
+Die \acrfull{dlda} ist eine Version des \acrshort{dlda}, welche die chronologische Reihenfolge der Dokumente berücksichtigt. Dadurch ist es möglich die Veränderung der Themenschwerpunkte über den Zeitraum zu betrachten. \parencite[vgl.][]{dynamicLDA}
 
 \section{Hierarchical Latent Dirichlet Allocation}
 Hierarchisches \ac{lda} (\ac{hlda}) erweitert \ac{lda}, um eine beliebig tiefe  Hierarchie aus Unterthemen. \parencite[vgl.][]{griffiths2004hierarchical} Diese lassen sich als Baumdiagramm darstellen. Dadurch erhält man noch mehr Informationen zu einem Thema, um es genauer zu benennen. Auch Cluster lassen sich dadurch erkennen. \ac{hlda} benutzt den \acl{crp} (\ac{crp}). Angenommen es gibt ein chinesisches Restaurant mit unendlich vielen Tischen, an denen unendlich viele Gäste sitzen können. Der erste Gast setzt sich an den ersten Tisch. Der zweite Gast setzt sich an den ersten Tisch mit der Wahrscheinlichkeit () und an einen unbesetzten Tisch mit der Wahrscheinlichkeit (). 
