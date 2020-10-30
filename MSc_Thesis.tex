@@ -37,13 +37,20 @@ a4paper]{report}
 \fancypagestyle{plain}{
 	\fancyhf{}
 	
-	\renewcommand{\chaptermark}[1]{\markright{Abkürzungsverzeichnis}}
+	\fancyfoot[R]{\thepage}
+	\renewcommand{\headrulewidth}{0pt}
+	\renewcommand{\footrulewidth}{.4pt}
+}
+\fancypagestyle{start}{
+	\fancyhf{}
+	
+	%\renewcommand{\chaptermark}[1]{\markright{Abkürzungsverzeichnis}}
 	\fancyhead[R]{\nouppercase{\rightmark}}
 	\fancyfoot[R]{\thepage}
 	\renewcommand{\headrulewidth}{.4pt}
 	\renewcommand{\footrulewidth}{.4pt}
 }
-\fancypagestyle{main}{
+\fancypagestyle{middle}{
 	\fancyhf{}
 
 	\fancyhead[R]{\nouppercase{\leftmark}}
@@ -59,8 +66,8 @@ a4paper]{report}
 	\renewcommand{\headrulewidth}{.4pt}
 	\renewcommand{\footrulewidth}{.4pt}
 }
-\appto\frontmatter{\pagestyle{plain}}
-\appto\mainmatter{\pagestyle{main}}
+\appto\frontmatter{\pagestyle{start}}
+\appto\mainmatter{\pagestyle{middle}}
 \appto\backmatter{\pagestyle{end}}
 
 % hacks
@@ -128,7 +135,8 @@ a4paper]{report}
  sorting=anyt,%
  sortcites=true,%
  hyperref=auto,%
- maxnames=10,%
+ maxcitenames=1,%
+ maxbibnames=10,%
  minnames=1%
  %dashed=false%
 ]{biblatex}

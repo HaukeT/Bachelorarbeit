@@ -7,11 +7,10 @@ Der Patentdatensatz enthält ausschließlich Patente von \acl{gm} (\ac{gm}), die
 \section{Preprocessing}
 Das Preprocessing wurde mit dem PatVisor\textregistered, das Patentanalysewerkzeug vom \acl{ipmi} (\ac{ipmi}), durchgeführt. Dazu wurde vom \ac{ipmi} ein themenbezogener Synonymfilter bereitgestellt. Aus den Patenten wurde nur der Titel, der Abstract und die Claims als Text verwendet. Die Anmeldedaten wurden als Metadaten für \ac{dlda} verwendet. Die Texte wurden mit dem Patvisor lemmatisiert. Das Lemma ist die Grundform eines Wortes und wird hier verwendet damit die Häufigkeit des Wortes bestimmt werden kann, einschließlich aller Varianten. Herausgefiltert wurden Artikel, Pronomen und Ähnliches das nur im Kontext eine Bedeutung hat und daher im \acl{bow} Modell irrelevant ist. Außerdem wurden manuell Abkürzungen erfasst wie \acl{cvt} (\ac{cvt}). Bigramme wurden in einem Fenster von fünf Worten erstellt, das über den Text rolliert. Die Worte eines Fensters wurden ohne Wiederholung permutiert. Die Wörter in einer \acl{tdm} (\ac{tdm}) gespeichert.
 
-\section{Implementierung in Python}
+\section{Durchführung des Topic Modeling}
 
-
-\subsection{Gensim}
-Das Topicmodeling wurde nach dem Preprocessing in vier Schritten implementiert: Wörterbuch- und Korpuserzeugung, \ac{lda}, Evaluation, Visualisierung. Gensim ist eine Python library für Textanalyse. Ein Teil des Codes wurde vom IPMI bereitgestellt. Zuerst wird aus der \ac{tdm} des Preprocessings ein Wörterbuch und ein Korpus erstellt. Das Wörterbuch indiziert jedes Wort und speichert die Häufigkeit des Wortes aus dem gesamten Korpus. Der Korpus verbindet die Indizes der Wörter mit den Indizes der Dokumente und speichert die Häufigkeit der Wörter pro Dokument.
+\subsection{LDA}
+Das Topic Modeling wurde nach dem Preprocessing in vier Schritten implementiert: Wörterbuch- und Korpuserzeugung, \ac{lda}, Evaluation, Visualisierung. Gensim ist eine Python library für Textanalyse. Ein Teil des Codes wurde vom IPMI bereitgestellt. Zuerst wird aus der \ac{tdm} des Preprocessings ein Wörterbuch und ein Korpus erstellt. Das Wörterbuch indiziert jedes Wort und speichert die Häufigkeit des Wortes aus dem gesamten Korpus. Der Korpus verbindet die Indizes der Wörter mit den Indizes der Dokumente und speichert die Häufigkeit der Wörter pro Dokument.
 
 \begin{table}[!htb]
 	\RawFloats
@@ -47,8 +46,7 @@ Das Topicmodeling wurde nach dem Preprocessing in vier Schritten implementiert: 
 	\end{minipage} 
 \end{table}
 
-Ein Thema wird für Menschen durch die wahrscheinlichsten Wörter ersichtlich.\todo[fancyline]{besser Mimno et al.?} \parencite[vgl.][S. 265-266]{mimno2011optimizing} Mit der Kohärenz eines Themas ist der semantische Zusammenhang zwischen diesen Wörtern gemeint. Diese Kohärenz kann man durch das gemeinsame Auftreten von Wörtern in einer Gruppe berechnen. Das u\_mass Maß funktioniert nach diesem Prinzip, benannt nach der Universität von Massachusetts. Es gibt auch andere Kohärenzmaße, die eine bestimmte Anzahl an Wörtern in einem Schiebefenster betrachten. Dadurch wird ein feinerer Kontext betrachtet anstatt das gesamte Dokument. Das c\_v Maß benutzt ein Schiebefenster. \todo{c\_v Maß Zitat?}
-
+Ein Thema wird für Menschen durch die wahrscheinlichsten Wörter ersichtlich. \parencite[vgl.][S. 265-266]{mimno2011optimizing} Mit der Kohärenz eines Themas ist der semantische Zusammenhang zwischen diesen Wörtern gemeint. Diese Kohärenz kann man durch das gemeinsame Auftreten von Wörtern in einer Gruppe berechnen. Das u\_mass Maß funktioniert nach diesem Prinzip, benannt nach der Universität von Massachusetts. Es gibt auch andere Kohärenzmaße wie das c\_v Maß, die eine bestimmte Anzahl an Wörtern in einem Schiebefenster betrachten. Dadurch wird ein feinerer Kontext betrachtet anstatt das gesamte Dokument. Allerdings wird hier u\_mass verwendet, weil es aufgrund des fehlenden Schiebefensters auch bei Bigrammen funktioniert.
 
 Die Distanz zwischen zwei Themen ist die Unterschiedlichkeit der Wörter zweier Themen. Eine Methode der Berechnung ist der Jaccard-Koeffizient. Diese ist die Mächtigkeit der Schnittmenge dividiert durch die Mächtigkeit der Vereinigungsmenge zweier Themen.
 
@@ -59,6 +57,7 @@ Die Distanz zwischen zwei Themen ist die Unterschiedlichkeit der Wörter zweier 
 
 
 Danach wird \ac{lda} angewandt. Die Hyperparameter Alpha und Beta werden auf der Einstellung auto belassen, um die Werte selbst zu erlernen. Die Iterationen werden auf 20.000 gesetzt und die minimale Wahrscheinlichkeit beträgt null. Dadurch wird jedes Dokument zu jedem Thema mit einer Wahrscheinlichkeit zugeordnet, auch wenn diese gering ist. \ac{lda} benötigt eine vorgegebene Anzahl an Themen. Um eine möglichst kohärente und interpretierbare Anzahl an Themen zu finden, werden für die Unigramme alle Modelle bis zu 300 Themen erstellt. Da die Kohärenz der Bigramme bereits ab 51 Themen ein Plateau erreicht wurde die Themenerstellung ab 100 abgebrochen. Mit zunehmender Themenanzahl steigt zwar auch die Kohärenz aber so viele Themen sind nicht sinnvoll interpretierbar. Der Vorteil des \ac{lda} ist schließlich die Zeit, welche benötigt wird einen Datensatz zu verstehen, zu verringern. Mit zunehmender Zahl an Themen sinkt außerdem die Distanz zwischen den Themen, was zu ähnlichen Themen führt. Eigentlich ist eine hohe Kohärenz beim u\_mass negativ. Damit Kohärenz und Distanz in einem Diagramm dargestellt werden können wurde von der Kohärenz der absolute Wert genommen.
+
 
 \begin{figure}[htpb]
 	\centering
@@ -93,19 +92,21 @@ Bei den Unigrammen sind es in Abbildung \ref{fig:Kohärenz_Distanz_Unigramme} 83
 Im letzten Schritt werden die Daten als Themenliste, Dokument-Themen und Themen-Wort Matrizen gespeichert. Mit  pyLDAvis wird eine interaktive multidimensional skalierte Visualisierung erstellt. Diese Visualisierung berücksichtigt die Distanz und die Größe der Themen.
 
 
-\subsection{Tomotopy}
+\subsection{Hierarchisches LDA}
+
 Tomotopy ist ebenfalls eine Python library für Textanalyse. Sie ist ähnlich zu Gensim aber ist besonders performant und unterstützt zusätzlich \ac{hlda}, allerdings keine Kohärenzmaße. Deshalb werden hier beide librarys verwendet, um die jeweiligen Funktionen zu nutzen.
 
 Die Wörter der Dokumente werden in eine Liste aus Listen geladen. Für \ac{hlda} wird keine Themenanzahl benötigt aber einige Parameter aus der Tabelle \ref{table:HLDA_Parameter} die \ac{lda} in Gensim selbst erlernt. Der \ac{hlda} verwirft die ersten 10.000 Iterationen und erstellt danach zehn Modelle mit einem Abstand von jeweils 100 Iterationen. \parencite[vgl.][S. 6]{griffiths2004hierarchical} \todo[inline]{25 random restarts to avoid local maxima, take highest posterior likelihood} In Abbildung \ref{fig:HLDA_Unigram_Baum} hat sich ein drei Ebenen tiefes Baumdiagramm als übersichtlich erwiesen, um Überthemen zu finden und Unterthemen zu clustern.
 
 \begin{table}
+	\RawFloats
 	\centering
 	\caption{HLDA Parameter}
 	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
 		\hline 
-		Name& iterations & seed & TermWeight & $\alpha$ & $\eta$ & $\gamma$ & depth & rm\_top & burn\_in \\ 
+		Name& iter. & seed & TW & $\alpha$ & $\eta$ & $\gamma$ & depth & rm\_top & burn\_in \\ 
 		\hline 
-		Unigrame& 1000 & 100 & \ac{tf-idf} & 0,3 & 0,6 & 0,15 & 3 & 1 & 10.000 \\ 
+		Unigramme& 1000 & 100 & \ac{tf-idf} & 0,3 & 0,6 & 0,15 & 3 & 1 & 10.000 \\ 
 		\hline 
 		Bigramme& 1000 & 100 & \ac{tf-idf} & 0,3 & 0,6 & 0,15 & 3 & 1 & 10.000  \\ 
 		\hline  
@@ -113,7 +114,7 @@ Die Wörter der Dokumente werden in eine Liste aus Listen geladen. Für \ac{hlda
 	\label{table:HLDA_Parameter}
 \end{table} 
 
-Die Term Frequency-Inverse Document Frequency (\ac{tf-idf}) wird benutzt, um herauszufinden wie relevant ein Wort für ein Dokument ist in einer Menge von Dokumenten. Der wert steigt proportional zu der Frequenz des Wortes in einem Dokument und sinkt mit der Anzahl an Dokumenten in denen das Wort vorkommt.
+Die Term Frequency-Inverse Document Frequency (\ac{tf-idf}) wird benutzt, um herauszufinden wie stark ein Wort zu einem Dokument gehört in einer Menge von Dokumenten. \parencite{luhn1957statistical}  \parencite{jones1972statistical} Der wert steigt mit mit der Frequenz des Wortes in einem Dokument und sinkt mit der Anzahl an Dokumenten in denen das Wort vorkommt.
 
 \begin{figure}[htpb]
 	\centering
@@ -123,6 +124,10 @@ Die Term Frequency-Inverse Document Frequency (\ac{tf-idf}) wird benutzt, um her
 	}
 	\label{fig:HLDA_Unigram_Baum}
 \end{figure}
+
+\subsection{Dynamisches LDA}
+
+Für das \gls{dlda} wurden die 1410 Patente des Datensatzes in die 14 Zeitabschnitte von 2004 bis 2017 aufgeteilt. Jeder Zeitabschnitt ist ein Jahr lang und enthält die Patente deren APD in jenes Jahr fällt. Jeder Zeitabschnitt enthält 1 bis 173 Patente. Die Jahre 2004 und 2017 enthalten mit 1 und 13 Patenten die wenigsten im Datensatz. Damit die Ergebnisse des \gls{dlda} denen des \gls{lda} vergleichbar sind wurden für die Uni- und Bigramme wieder Modelle mit 83 und 51 Themen erstellt.
 
 %\section{Gibbs Sampling}
 
