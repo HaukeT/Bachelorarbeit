@@ -1,26 +1,114 @@
-\chapter{Vergleich und Analyse der Ergebnisse}
+\chapter{Analyse der Ergebnisse}
 
 
+Die Analyse der Ergebnisse erfolgt in vier Schritten. Die Ergebnisse der drei Algorithmen werden einzeln ausgewertet und anhand markanter Beispiele erläutert. Mit dem \gls{lda} werden die latenten Themen und Themencluster des Patentdatensatzes benannt und eingegrenzt. Mit dem \gls{hlda} werden die gefundenen Themencluster bestätigt. Der \gls{dlda} wird die Entwicklung der relevantesten Themen über die Zeit beschreiben. Abschließend werden die Ergebnisse anhand von Kennzahlen verglichen.
 
 
 %Kohärenz, Distanz, Themenanzahl, Verständlichkeit, Aufwand
-\section{Kennzahlen}
+\section{Analyse der Ergebnisse des \gls{lda}}
 
+Zuerst wird das qualitative Verfahren zur Benennung und Gruppierung der Themen an Beispielen erklärt und wie es durch quantitative Daten vom \gls{lda} unterstützt wird. Dies wird mit Abbildungen aus \gls{pyLDAvis} unterstützt. Die interaktive Version von \gls{pyLDAvis} befindet sich im digitalen Anhang. Danach werden die Themen benannt und gruppiert.
+
+Die Themen welche durch \gls{lda} gefunden wurden, werden mit Hilfe von \gls{pyLDAvis} benannt und visualisiert \parencite[vgl.][S. 63]{sievert2014ldavis}. \gls{pyLDAvis} ist ein Programm, das die Themen multidimensional skaliert und interaktiv darstellt. In Abbildung \ref{fig:clustering_process01} werden links die Themenradien nach Termanzahl skaliert. Die Tabelle rechts zeigt die Termhäufigkeiten im ausgewählten Thema Nummer 50 und im gesamten Korpus.
+
+\begin{landscape}
+ \begin{figure}[htpb]
+	\centering
+	\includegraphics[width=19.29cm,keepaspectratio=true]{img/clustering_process01.png}
+	\caption{
+		Interthematische Distanz Karte erstellt mit multidimensionaler Skalierung und die relevantesten Terme für das Thema Nummer 50 bei einem $\lambda = 1,0$
+	}
+	\label{fig:clustering_process01}
+ \end{figure}
+\end{landscape}
+
+ 
+ 
+In Abbildung \ref{fig:clustering_process02} wurde das $\lambda$ von $1,0$ auf $0,6$ herabgesetzt. Dadurch werden die Terme im ausgewählten Thema absteigend nach Relevanz sortiert. Der Parameter $\lambda$ soll mit dem Wert $0,6$ den Anwender die korrektesten  Themen finden lassen \parencite[vgl.][S. 66-68]{sievert2014ldavis}. Rechts wurde der Term \emph{countershaft} ausgewählt. Dadurch werden die Themenradien, abhängig von der Verteilung des ausgewählten Terms, skaliert. Die Themen 50, 20 und 83 enthalten die meisten der \emph{countershaft} Terme und sind teil des pink eingekreisten Subcluster des \emph{transmission} Clusters, aus Abbildung \ref{fig:Themengruppen_LDA_Unigramm}. Deshalb sind sie als \emph{countershaft} Themen zu werten.
+
+\begin{landscape}
+	\begin{figure}[htpb]
+		\centering
+		\includegraphics[width=19.29cm,keepaspectratio=true]{img/clustering_process02.png}
+		\caption{
+			Interthematische Distanz Karte erstellt mit multidimensionaler Skalierung mit einer Themenverteilung welche von dem Term countershaft abhängt und die relevantesten Terme für das Thema Nummer 50 bei einem $\lambda = 0,6$ 
+		}
+		\label{fig:clustering_process02}
+	\end{figure}
+\end{landscape}
+
+ 
+Außerdem kommen die äquivalenten Terme \emph{dualclutch}, \emph{dct} und \emph{automatictransmission} besonders häufig in den Themen 50, 83, 69 und 10 vor. Das ist ein weiterer Teil des Subclusters \emph{transmission}. Des weiteren sind die Terme \emph{synchronizer} und \emph{mesh} beide in den Themen 50, 70 und benachbarten Themen häufig zu finden. Das deutet auf das synchronisieren der \emph{shafts} hin. Durch dieses qualitative Verfahren werden die Themen benannt und Cluster gebildet. Doch \gls{pyLDAvis} reicht allein nicht immer aus. Thema 77 deutet mit den Termen \emph{clutch} und \emph{slip} auf eine Slipper clutch hin aber warum befindet es sich dann in dem \emph{method} Cluster? Für genauere Einblicke in Themen wurde mit \gls{lda} eine Patent-Themen-Matrix erstellt. Das Patent 9,989,146 passt am besten zu Thema 77. Es beschreibt eine Methode, welche den optimalen Druck einer \emph{clutch} in einem \gls{cvt} erlernt, damit die sie einen \emph{pulley slip} verhindern kann. Daher kommt in diesem Thema der Term \emph{pressure} ohne \emph{fluid} oder \emph{hydraulik} vor.
+ 
+ \begin{figure}[htpb]
+ 	\centering
+ 	\includegraphics[width=\textwidth,keepaspectratio=true]{img/LDAvisGM-3-1-1_clustered.png}
+ 	\caption{
+ 		Themengruppen der LDA Unigramme multidimensionale Skalierung
+ 	}
+ 	\label{fig:Themengruppen_LDA_Unigramm}
+ \end{figure}
+ 
+ 
+Der blaue Cluster besteht hauptsächlich aus Themen zu \emph{transmission} Komponenten. Fast alle Themen des blauen Clusters enthalten die Terme \emph{transmission}, \emph{sungear} und \emph{ringgear}. Der lila Subcluster enthält das größte Thema des Datensatzes Nummer 44. Die Themen beinhalten das \emph{planetarygearset}, die \emph{multispeedtransmission} und werden zum \emph{torquetransmit} genutzt. Der türkise Cluster zeigt das Thema \gls{evt} mit einem \emph{motorgenerator} für Hybridautos. Der pinke Cluster beinhaltet die \emph{dualclutch}, die  \emph{automatictransmission}, den \emph{countershaft}, den \emph{inputshaft} und die \emph{synchronizer} welche die \emph{shafts} verbinden (\emph{mesh}). Dies wird im Patent 8,240,224 beschrieben.
+ 
+Der Rote Cluster enthält besonders viele Terme wie \emph{method}, \emph{command} und \emph{request}. Der Cluster besteht daher aus Steuerungs- und Regelungsthemen von Fahrzeugen.
+ 
+Im gelben Subcluster geht es hauptsächlich um die elektronische Steuerung von Kupplungen, dem Motor und dem \gls{cvt}. Er ist eine Teilmenge des orangen Subclusters, weil in dem gelben Subcluster viel häufiger der Term \emph{command} vorkommt und \emph{montior} gleichmäßiger im gesamten orangen Subcluster einschließlich des gelben Subclusters verteilt ist. Das Thema Nummer 14 ist eine Ausnahme, weil es fast gleich viele Terme von \emph{command} und \emph{monitor} für die \emph{hydraulic} \emph{pressure} enthält. Deshalb ist es extra gelb umkreist. Die \emph{frictionclutch} ist hauptsächlich dem Thema 77 zuzuordnen. Der Term \emph{slip} kommt in Verbindung mit der \emph{clutch} in den umliegenden Themen häufig vor. Auch die \emph{dogclutch} ist in dem gelben Subcluster zu finden obwohl sie hauptsächlich im Thema 5 vorkommt. Im Thema 28 geht es um die Steuerung der \emph{binary} \emph{clutch} (9,061,675), die im Thema 50 schon \emph{dualclutch} genannt wurde. Das Thema 3 umfasst das besagte \gls{cvt}. Fast alle Themen des roten Clusters sind eng verbunden mit dem \emph{engine}, besonders die Themen 41 und 33.
+ 
+Der schwarze Subcluster enthält viele Themen zur Beobachtung (\emph{monitor}, \emph{sensor}) der \emph{temperature} und der \emph{pressure}. In diesem schwarzen Subcluster geht es hauptsächlich um Themen die mit Flüssigkeit in Verbindung stehen. Es geht um die \emph{hydraulic} \emph{pressure} (14), die \emph{hydraulic} \emph{pump} (45) und die \emph{temperature} des \emph{coolant} im Kühlkreislauf der \emph{electricmachine}, der \emph{engine} und des \emph{radiator} (57). Deswegen befindet sich der schwarze Hauptcluster in der Nähe.
+ 
+Der schwarze Hauptcluster enthält fast alle Themen die in Verbindung mit Flüssigkeit stehen. Besonders häufig ist die Kombination \emph{solenoid}, \emph{hydraulic}, \emph{valve} und \emph{fluid}. Das Thema 17 beschreibt in mehreren Patenten (8,382,639) die Steuerung einer \emph{dualclutch} mithilfe von \emph{hydraulic} und \emph{solenoids}.
+
+Der dunkel grüne Cluster besteht aus sehr vielen kleinen Themen die nicht gänzlich durch thematische Nähe gruppiert wurden. Ein gemeinsamer Term ist \emph{bias} was auf Zahnräder hindeutet. Das ist leider unspezifisch. Der hellgrüne Subcluster hingegen hat zwei beschreibende Terme. \emph{axis} und \emph{house} zeigen eine Verwandschaft mit dem pinken Subcluster der ebenfalls \emph{gear} \emph{house} enthält.
+ 
+ 
+%\todo[inline]{DVU, TCM, ECM, VSR, DCT, ETR? gelber cluster}
+ 
+%Der orange Subcluster 
+ 
+ 
+ 
+%9 layshaft
+%52 turbine
+ 
+ 
+
+
+\section{Analyse der Ergebnisse des \gls{hlda}}
+
+Die Ergebnisse des \gls{hlda} werden im Vergleich mit den \gls{lda} Ergebnissen analysiert.
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[scale=0.5,keepaspectratio=true]{img/hldamotorgenerator.png}
+	\caption{
+		Ausschnitt des \gls{hlda} Baums
+	}
+	\label{fig:hlda_motorgenerator}
+\end{figure}
+
+
+
+\section{Analyse der Ergebnisse des \gls{dlda}}
+
+
+\section{Vergleich der Ergebnisse anhand von Kennzahlen}
 Die Unigrammmodelle weisen eine niedrigere Distanz zueinander auf als die Bigrammmodelle. Das liegt daran, das es deutlich mehr Bigramme gibt und diese auch als unterschiedlich gewertet werden wenn sie sich nur teilweise unterscheiden. Ein Beispiel wäre gear gearset und gear gear. In \ref{fig:Kohärenz_Distanz_Unigramme} wird ersichtlich das sich die Kohärenz mit steigender Themenzahl verbessert bis sie gleich der Anzahl an Wörtern im Datensatz ist. Die Distanz hingegen sinkt nachdem sie einen Hochpunkt erreicht. In Abbildung 4.1 sind Muster und Hotspots aus Unigrammthemen zu erkennen, die besonders ähnlich oder unähnlich sind. Diese werden später geclustered. In Abbildung 4.2 gibt es ebenfalls Muster und Hotspots. Allerdings sind manche Bigrammthemen disjunkt, wodurch sie eine Distanz von 1 haben. 
 
 \begin{table}
 	\RawFloats
 	\centering
 	\caption{Kohärenzen}
-\begin{tabular}{|c|c|c|}
-	\hline
-	Modell & Unigramm & Bigramm \\
-	\hline
-	LDA & -2,03 & -5,51 \\
-	\hline
-	HLDA & -4,30 & -5,90 \\
-	\hline
-\end{tabular}
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Modell & Unigramm & Bigramm \\
+		\hline
+		LDA & -2,03 & -5,51 \\
+		\hline
+		HLDA & -4,30 & -5,90 \\
+		\hline
+	\end{tabular}
 	\label{table:Kohärenzen}
 \end{table} 
 
@@ -40,29 +128,4 @@ Die Unigrammmodelle weisen eine niedrigere Distanz zueinander auf als die Bigram
 		Distanz zwischen den top 50 Bigrammen der Themen
 	}
 	\label{fig:Distanz_Bigramme}
-\end{figure}
-
-
-\section{Themengruppen}
-
-
-\begin{figure}[htpb]
-	\centering
-	\includegraphics[width=\textwidth,height=10cm,keepaspectratio=true]{img/LDAvisGM-3-1-1clustered.png}
-	\caption{
-		Themengruppen der LDA Unigramme
-	}
-	\label{fig:Themengruppen_LDA_Unigramm}
-\end{figure}
-
-
-\section{Interpretation der Themen}
-
-\begin{figure}[htpb]
-	\centering
-	\includegraphics[width=\textwidth,height=12cm,keepaspectratio=true]{img/DLDA_unigram_01.png}
-	\caption{
-		Verlauf der Termhäufigkeit
-	}
-	\label{fig:DLDA_Unigramme_01}
 \end{figure}

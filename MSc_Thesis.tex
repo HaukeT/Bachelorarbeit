@@ -30,6 +30,18 @@ a4paper]{report}
 \newcommand{\cmark}{\rot{\myGreen{$\checkmark$}}}%
 \newcommand{\inmark}{\myGreen{$\checkmark$}}%
 
+%\usepackage{showframe}% http://ctan.org/pkg/showframe
+%\usepackage{etoolbox}% http://ctan.org/pkg/etoolbox
+
+%\makeatletter
+%\patchcmd{\@makechapterhead}{\vspace*{50\p@}}{\vspace*{10pt}}{}{}% Removes space above \chapter head
+%\patchcmd{\@makeschapterhead}{\vspace*{50\p@}}{\vspace*{10pt}}{}{}% Removes space above \chapter* head
+%\makeatother
+
+\usepackage[left=3.5cm,right=2.5cm,top=2.5cm,bottom=2cm,includeheadfoot]{geometry}
+\linespread{1.5}
+\usepackage{lscape}
+
 \usepackage{fancyhdr}
 
 \pagestyle{fancy}
@@ -37,7 +49,7 @@ a4paper]{report}
 \fancypagestyle{plain}{
 	\fancyhf{}
 	
-	\fancyfoot[R]{\thepage}
+	\fancyfoot[R]{\footnotesize \thepage}
 	\renewcommand{\headrulewidth}{0pt}
 	\renewcommand{\footrulewidth}{.4pt}
 }
@@ -45,24 +57,24 @@ a4paper]{report}
 	\fancyhf{}
 	
 	%\renewcommand{\chaptermark}[1]{\markright{Abkürzungsverzeichnis}}
-	\fancyhead[R]{\nouppercase{\rightmark}}
-	\fancyfoot[R]{\thepage}
+	\fancyhead[R]{\footnotesize \nouppercase{\rightmark}}
+	\fancyfoot[R]{\footnotesize \thepage}
 	\renewcommand{\headrulewidth}{.4pt}
 	\renewcommand{\footrulewidth}{.4pt}
 }
 \fancypagestyle{middle}{
 	\fancyhf{}
 
-	\fancyhead[R]{\nouppercase{\leftmark}}
-	\fancyfoot[R]{\thepage}
+	\fancyhead[R]{\footnotesize \nouppercase{\leftmark}}
+	\fancyfoot[R]{\footnotesize \thepage}
 	\renewcommand{\headrulewidth}{.4pt}
 	\renewcommand{\footrulewidth}{.4pt}
 }
 \fancypagestyle{end}{
 	\fancyhf{}
 
-	\fancyhead[R]{\nouppercase{\leftmark}}
-	\fancyfoot[R]{\thepage}
+	\fancyhead[R]{\footnotesize \nouppercase{\leftmark}}
+	\fancyfoot[R]{\footnotesize \thepage}
 	\renewcommand{\headrulewidth}{.4pt}
 	\renewcommand{\footrulewidth}{.4pt}
 }
@@ -74,8 +86,7 @@ a4paper]{report}
 %\usepackage{scrhack} 
 %\usepackage{floatrow}
 
-\usepackage[left=3.5cm,right=2.5cm,top=2.5cm,bottom=2cm,includeheadfoot]{geometry}
-\linespread{1.5} 
+
 
 % Seitenrand für Korrektur
 %\geometry{
@@ -120,6 +131,10 @@ a4paper]{report}
 %\setcounter{secnumdepth}{3}
 %\setcounter{tocdepth}{2}
 
+\usepackage[tiny, compact]{titlesec}
+\titleformat{\chapter}[display]
+{\normalfont\normalsize\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\normalsize}
+\titlespacing*{\chapter}{0pt}{0pt}{40pt}
 
 
 %
@@ -610,6 +625,19 @@ skipbelow=1\baselineskip,
 \usepackage{acro}
 \usepackage{mfirstuc}% provides \makefirstuc
 \usepackage{tocloft}
+\usepackage[automake]{glossaries}
+\renewcommand{\glossarypreamble}{\glsfindwidesttoplevelname[\acronymtype] \setlength{\parskip}{0pt}}
+
+\renewcommand\cftloftitlefont{\normalfont \bf}
+\renewcommand\cftlottitlefont{\normalfont \bf}
+\renewcommand\cfttoctitlefont{\normalfont \bf}
+
+\setlength{\cftbeforetoctitleskip}{41pt} % TOC: Table of Contents
+\setlength{\cftbeforeloftitleskip}{41pt} % LOF: Listing of Figures
+\setlength{\cftbeforelottitleskip}{41pt} % LOT: Listing of Tables
+\setlength{\cfttabindent}{0em}
+
+
 
 \acsetup{
 	first-style=short,
@@ -660,13 +688,16 @@ skipbelow=1\baselineskip,
 	tag = abbrev
 }
 
-\usepackage[automake]{glossaries}
 \makeglossaries
 \renewcommand*\glspostdescription{\dotfill}
 
 
 \newacronym{lda}{LDA}{Latent Dirichlet Allocation}
+\newacronym{hlda}{HLDA}{Hierarchical Latent Dirichlet Allocation}
 \newacronym{dlda}{DLDA}{Dynamic Latent Dirichlet Allocation}
+\newacronym{evt}{EVT}{Electrically Variable Transmission}
+\newacronym{cvt}{CVT}{Continuously Variable Transmission}
+\newacronym{pyLDAvis}{pyLDAvis}{Python LDA Visualization}
 
 \begin{document}
 
@@ -696,6 +727,7 @@ skipbelow=1\baselineskip,
 \frontmatter
 \pagenumbering{Roman}
 \tableofcontents
+
 \clearpage \newpage
 
 %\cftsetindents{entry}{indent}{numwidth}
@@ -710,7 +742,7 @@ skipbelow=1\baselineskip,
 %\printacronyms
 %
 %\glsaddall
-\printglossary[title=Abkürzungsverzeichnis]
+\printglossary[title=Abkürzungsverzeichnis,style=alttree]
 \clearpage
 \newpage
 \phantomsection
@@ -724,7 +756,7 @@ skipbelow=1\baselineskip,
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Setup für Fußnoten
-\setlength{\skip\footins}{2em}		% Fußnoten um 2em nach unten versetzt
+%\setlength{\skip\footins}{2em}		% Fußnoten um 2em nach unten versetzt
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% INHALT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \mainmatter
