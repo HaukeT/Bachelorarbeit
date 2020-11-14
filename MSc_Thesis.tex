@@ -142,20 +142,28 @@ a4paper]{report}
 % Hinweis: UTF8 verlangt nach biber statt bibtex8
 %\iffalse
 \usepackage[%
- backend=bibtex8,%
- style=alphabetic,%
+ backend=biber,%
+ style=authoryear,%
  bibstyle=alphabetic,%
  citestyle=authoryear,%
  natbib=false,%
  sorting=anyt,%
  sortcites=true,%
  hyperref=auto,%
+ bibencoding=utf8,%
+ sortlocale=de_DE,%
  maxcitenames=1,%
  maxbibnames=10,%
  minnames=1%
  %dashed=false%
 ]{biblatex}
 %\fi
+
+\DefineBibliographyStrings{ngerman}{ 
+	andothers = {et\addabbrvspace al\adddot},
+	andmore   = {et\addabbrvspace al\adddot},
+}
+%\DefineBibliographyStrings{ngerman}{andothers = {u.\,a.},}
 
 \setcounter{biburllcpenalty}{7000}
 \setcounter{biburlucpenalty}{8000}
@@ -166,7 +174,7 @@ a4paper]{report}
 \addbibresource{bib/bib_books.bib}
 
 \setlength{\bibitemsep}{1em}
-\DefineBibliographyStrings{ngerman}{andothers = {u.\,a.},}
+
 
 
 %

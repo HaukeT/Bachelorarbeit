@@ -5,9 +5,17 @@ Die Analyse der Ergebnisse erfolgt in vier Schritten. Die Ergebnisse der drei Al
 
 
 %Kohärenz, Distanz, Themenanzahl, Verständlichkeit, Aufwand
-\section{Analyse der Ergebnisse des \gls{lda}}
+\section{Analyse der Ergebnisse des \gls{lda}} \label{lda_analysis}
 
-Zuerst wird das qualitative Verfahren zur Benennung und Gruppierung der Themen an Beispielen erklärt und wie es durch quantitative Daten vom \gls{lda} unterstützt wird. Dies wird mit Abbildungen aus \gls{pyLDAvis} unterstützt. Die interaktive Version von \gls{pyLDAvis} befindet sich im digitalen Anhang. Danach werden die Themen benannt und gruppiert.
+Zuerst werden die vier Schritte des qualitativen Verfahrens zur Benennung und Gruppierung der Themen aufgelistet. Danach werden die Schritte an Beispielen erklärt und wie das Verfahren durch quantitative Daten vom \gls{lda} unterstützt wird. Dies wird mit Abbildungen aus \gls{pyLDAvis} verdeutlicht. Die interaktive Version von \gls{pyLDAvis} befindet sich im digitalen Anhang. Danach werden die Themen benannt und gruppiert.
+
+Das Verfahren zur Benennung und Gruppierung der Themen besteht aus vier Schritten:
+\begin{enumerate}
+	\item In \gls{pyLDAvis} Themencluster auswählen
+	\item Die relevantesten Terme der Themen nacheinander auswählen
+	\item Themenradien beobachten und Terme die in fast allen Themen des ausgewählten Clusters häufig vorkommen aber außerhalb nur selten vorkommen benennen den Cluster
+	\item Bei diesem Vorgehen werden häufig Subcluster entdeckt, die ebenfalls nach dieser Methode benannt werden
+\end{enumerate}
 
 Die Themen welche durch \gls{lda} gefunden wurden, werden mit Hilfe von \gls{pyLDAvis} benannt und visualisiert \parencite[vgl.][S. 63]{sievert2014ldavis}. \gls{pyLDAvis} ist ein Programm, das die Themen multidimensional skaliert und interaktiv darstellt. In Abbildung \ref{fig:clustering_process01} werden links die Themenradien nach Termanzahl skaliert. Die Tabelle rechts zeigt die Termhäufigkeiten im ausgewählten Thema Nummer 50 und im gesamten Korpus.
 
@@ -56,11 +64,12 @@ Der Rote Cluster enthält besonders viele Terme wie \emph{method}, \emph{command
  
 Im gelben Subcluster geht es hauptsächlich um die elektronische Steuerung von Kupplungen, dem Motor und dem \gls{cvt}. Er ist eine Teilmenge des orangen Subclusters, weil in dem gelben Subcluster viel häufiger der Term \emph{command} vorkommt und \emph{montior} gleichmäßiger im gesamten orangen Subcluster einschließlich des gelben Subclusters verteilt ist. Das Thema Nummer 14 ist eine Ausnahme, weil es fast gleich viele Terme von \emph{command} und \emph{monitor} für die \emph{hydraulic} \emph{pressure} enthält. Deshalb ist es extra gelb umkreist. Die \emph{frictionclutch} ist hauptsächlich dem Thema 77 zuzuordnen. Der Term \emph{slip} kommt in Verbindung mit der \emph{clutch} in den umliegenden Themen häufig vor. Auch die \emph{dogclutch} ist in dem gelben Subcluster zu finden obwohl sie hauptsächlich im Thema 5 vorkommt. Im Thema 28 geht es um die Steuerung der \emph{binary} \emph{clutch} (9,061,675), die im Thema 50 schon \emph{dualclutch} genannt wurde. Das Thema 3 umfasst das besagte \gls{cvt}. Fast alle Themen des roten Clusters sind eng verbunden mit dem \emph{engine}, besonders die Themen 41 und 33.
  
-Der schwarze Subcluster enthält viele Themen zur Beobachtung (\emph{monitor}, \emph{sensor}) der \emph{temperature} und der \emph{pressure}. In diesem schwarzen Subcluster geht es hauptsächlich um Themen die mit Flüssigkeit in Verbindung stehen. Es geht um die \emph{hydraulic} \emph{pressure} (14), die \emph{hydraulic} \emph{pump} (45) und die \emph{temperature} des \emph{coolant} im Kühlkreislauf der \emph{electricmachine}, der \emph{engine} und des \emph{radiator} (57). Deswegen befindet sich der schwarze Hauptcluster in der Nähe.
+Der schwarze Subcluster enthält viele Themen zur Beobachtung (\emph{monitor}, \emph{sensor}) der \emph{temperature} und der \emph{pressure}. In diesem schwarzen Subcluster geht es hauptsächlich um Themen die mit Flüssigkeit in Verbindung stehen. Es geht um die \emph{hydraulic} \emph{pressure} (14), die \emph{hydraulic} \emph{pump} (45) und die \emph{temperature} des \emph{coolant} im Kühlkreislauf der \emph{electricmachine} (8,167,773), der \emph{engine} und des \emph{radiator} (57). Durch die Steuerung des Kühlkreislauf können Komponenten wie die \emph{transmission} auf Betriebstemperatur gebracht werden (10,161,501). Zu dem Thema 12 passt am besten das Patent 9,404,403, es beschreibt eine Methode um das Öllevel zu beobachten (\emph{monitor}). Auf Grund der vielen Flüssigkeitsthemen befindet sich der schwarze Subcluster in der Nähe des schwarzen Hauptclusters.
  
-Der schwarze Hauptcluster enthält fast alle Themen die in Verbindung mit Flüssigkeit stehen. Besonders häufig ist die Kombination \emph{solenoid}, \emph{hydraulic}, \emph{valve} und \emph{fluid}. Das Thema 17 beschreibt in mehreren Patenten (8,382,639) die Steuerung einer \emph{dualclutch} mithilfe von \emph{hydraulic} und \emph{solenoids}.
+Der schwarze Hauptcluster enthält fast alle Themen die in Verbindung mit Flüssigkeit stehen. Er teilt die Häufigkeit des von \emph{control} mit dem roten Cluster aber unterscheidet sich durch die Verwendung von die Terme \emph{communication} und \emph{communicate} die sonst nur selten auftreten. Besonders häufig ist die Kombination \emph{solenoid}, \emph{hydraulic}, \emph{valve} und \emph{fluid}. Das Thema 17 beschreibt in mehreren Patenten (8,820,185
+, 8,382,639) die Steuerung einer \emph{dualclutch} mithilfe von \emph{hydraulic} und \emph{solenoids}. Mit einem Elekrtomagnet (\emph{solenoids}) wird ein Verschluss aus der \emph{valve} gezogen. Dieser Verschluss wird nach dem nach dem Ausschalten des \emph{solenoids} mit einer Feder zurück in die \emph{valve} geschoben. Mit einem \emph{solenoid} kann auch Druck erzeugt werden. Daher kommt der Term \emph{pressure} ebenfalls häufig vor. Diese Methode findet Verwendung in Thema 68, dort wird beschrieben wie eine \emph{actuator} \emph{fork} kontrolliert (\emph{control}) werden kann (9,605,755).
 
-Der dunkel grüne Cluster besteht aus sehr vielen kleinen Themen die nicht gänzlich durch thematische Nähe gruppiert wurden. Ein gemeinsamer Term ist \emph{bias} was auf Zahnräder hindeutet. Das ist leider unspezifisch. Der hellgrüne Subcluster hingegen hat zwei beschreibende Terme. \emph{axis} und \emph{house} zeigen eine Verwandschaft mit dem pinken Subcluster der ebenfalls \emph{gear} \emph{house} enthält.
+Der dunkel grüne Cluster besteht aus sehr vielen kleinen Themen die nicht gänzlich durch thematische Nähe gruppiert wurden. Ein gemeinsamer Term ist \emph{bias} was auf Zahnräder hindeutet. Das ist leider unspezifisch. Der hellgrüne Subcluster hingegen hat zwei beschreibende Terme. \emph{shaft}, \emph{axis} und \emph{house} zeigen eine Verwandschaft mit dem pinken Subcluster, der ebenfalls \emph{shaft} \emph{house} enthält. Das \emph{house} deutet auf das gear housing hin was auch zu den Termen \emph{surface}, \emph{side} und \emph{body} passt die den gesamten dunkelgrünen Cluster bilden.
  
  
 %\todo[inline]{DVU, TCM, ECM, VSR, DCT, ETR? gelber cluster}
@@ -77,20 +86,50 @@ Der dunkel grüne Cluster besteht aus sehr vielen kleinen Themen die nicht gänz
 
 \section{Analyse der Ergebnisse des \gls{hlda}}
 
-Die Ergebnisse des \gls{hlda} werden im Vergleich mit den \gls{lda} Ergebnissen analysiert.
+Die Ergebnisse des \gls{hlda} werden im Vergleich mit den \gls{lda} Ergebnissen analysiert. Zwei Subcluster des \gls{hlda} Baums werden mit den Ergebnissen des \gls{lda} verglichen und analysiert. Der ganze \gls{hlda} Baum ist zu groß um leserlich abgebildet zu werden. Er kann im digitalen Anhang mit einem Programm geöffnet werden, das graphml unterstützt, zum Beispiel Cytoscape.
+
+Der \emph{engine} Subcluster aus Abbildung \ref{fig:hlda_engine} passt gut zu dem orangefarbenen Subcluster aus der \gls{lda} Abbildung \ref{fig:Themengruppen_LDA_Unigramm}. Die Terme \emph{engine} und \emph{fuel} passen zu dem Motorthema 41. Die Subthema \emph{monitor} passt genau zu dem orangefarbenen Subcluster und \emph{temperature} gehört mit \emph{electricmachine} zum Thema 57. Dadurch werden die mit \gls{lda} benannten Themen bestätigt. Die Subthemen \emph{operate}, \emph{shift} und \emph{drum} sind im \gls{lda} Modell in dieser Form nicht in der Nähe aufzufinden. Allerdings passen sie thematisch zu den anderen.
 
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[scale=0.5,keepaspectratio=true]{img/hldamotorgenerator.png}
+	\includegraphics[width=\textwidth,keepaspectratio=true]{img/hldaEngine.png}
 	\caption{
-		Ausschnitt des \gls{hlda} Baums
+		Der \emph{engine} Ausschnitt des \gls{hlda} Baums
 	}
-	\label{fig:hlda_motorgenerator}
+	\label{fig:hlda_engine}
+\end{figure}
+
+Der \emph{fork} Subcluster aus Abbildung \ref{fig:hlda_fork} passt genau zu dem schwarzen Cluster aus Abbildung \ref{fig:Themengruppen_LDA_Unigramm}. Dort beschreibt das Thema 68 ebenfalls eine \emph{synchronizer actuator fork} aus dem Patent 9,605,755. Der \gls{hlda} Subcluster enthält außerdem die Subthemen \emph{valve}, \emph{spool}, \emph{cool}, \emph{pressure}, \emph{calibrate}, \emph{position} und \emph{control}. Diese kommen auch alle im \gls{lda} Cluster vor und bestätigen erneut die Ergebnisse. Die \emph{spool} ist eine Spule und daher ein Bestandteil des Elektromagneten \emph{solenoid}.
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=\textwidth,keepaspectratio=true]{img/hldaFork.png}
+	\caption{
+		Der \emph{fork} Ausschnitt des \gls{hlda} Baums
+	}
+	\label{fig:hlda_fork}
 \end{figure}
 
 
-
 \section{Analyse der Ergebnisse des \gls{dlda}}
+
+Die Ergebnisse des \gls{dlda} werden zuerst eingeordnet und die Wahl der Terme, welche die ausgewählten Cluster und Themen repräsentieren, erläutert. Dann werden die Trends der Terme festgestellt.
+
+Der \gls{dlda} wurde mit den Ergebnissen des \gls{lda} und den Anmeldedaten der Patente gespeist. Daher sind die Ergebnisse des \gls{dlda} direkt vergleichbar mit denen des \gls{lda}. Die Terme wurden so gewählt, dass sie die Cluster möglichst genau beschreiben. Außerdem sollen sie relativ selten in anderen Clustern vorkommen, damit ihr Trend nicht verfälscht wird. Diese Bedingungen der Clusterbenennung wurden in \ref{lda_analysis} berücksichtigt.
+
+
+
+  \begin{figure}[!ht]
+	\centering
+	\begin{floatrow}
+		\ffigbox[\FBwidth]{\caption{Trends der Terme die ihren Cluster am besten beschreiben}\label{fig:dlda_overall}}{%
+			\includegraphics[width=\linewidth,keepaspectratio=true]{img/DLDA_overall.png}
+		}
+		\ffigbox[\FBwidth]{\caption{Trends der 3 Terme die das Thema 50 am besten beschreiben}\label{fig:dlda_topic_50}}{%
+			\includegraphics[width=\linewidth,keepaspectratio=true]{img/DLDA_topic_50.png}
+		}
+	\end{floatrow}
+\end{figure}
 
 
 \section{Vergleich der Ergebnisse anhand von Kennzahlen}

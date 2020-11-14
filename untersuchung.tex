@@ -58,15 +58,17 @@ Die Distanz zwischen zwei Themen ist die Unterschiedlichkeit der Wörter zweier 
 
 Danach wird \ac{lda} angewandt. Die Hyperparameter Alpha und Beta werden auf der Einstellung auto belassen, um die Werte selbst zu erlernen. Die Iterationen werden auf 20.000 gesetzt und die minimale Wahrscheinlichkeit beträgt null. Dadurch wird jedes Dokument zu jedem Thema mit einer Wahrscheinlichkeit zugeordnet, auch wenn diese gering ist. \ac{lda} benötigt eine vorgegebene Anzahl an Themen. Um eine möglichst kohärente und interpretierbare Anzahl an Themen zu finden, werden für die Unigramme alle Modelle bis zu 300 Themen erstellt. Da die Kohärenz der Bigramme bereits ab 51 Themen ein Plateau erreicht wurde die Themenerstellung ab 100 abgebrochen. Mit zunehmender Themenanzahl steigt zwar auch die Kohärenz aber so viele Themen sind nicht sinnvoll interpretierbar. Der Vorteil des \ac{lda} ist schließlich die Zeit, welche benötigt wird einen Datensatz zu verstehen, zu verringern. Mit zunehmender Zahl an Themen sinkt außerdem die Distanz zwischen den Themen, was zu ähnlichen Themen führt. Eigentlich ist eine hohe Kohärenz beim u\_mass negativ. Damit Kohärenz und Distanz in einem Diagramm dargestellt werden können wurde von der Kohärenz der absolute Wert genommen.
 
-
+\begin{landscape}
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=\textwidth,height=10cm,keepaspectratio=true]{img/coherenceAndDistanceUnigram.png}
+	\includegraphics[width=\textwidth,keepaspectratio=true]{img/coherenceAndDistanceUnigram.png}
 	\caption{
-		Kohärenz und Distanz der Themen mit Unigrammen
+		Veränderung der Kohärenz- und Distanzwerte der Themen
 	}
 	\label{fig:Kohärenz_Distanz_Unigramme}
 \end{figure}
+\end{landscape}
+
 
 Die Kohärenz der LDA Modelle wird mit dem u\_mass Maß bestimmt. Von eins wird der absolute u\_mass Wert vom LDA Modell mit n Themen subtrahiert und durch den absoluten u\_mass Wert des LDA Modells mit n + 1 Themen dividiert. Diese Berechnung wird für jedes Modell durchgeführt. Dadurch lässt sich die größte absolute Kohärenzsteigerung zum Vorgänger finden.
 
