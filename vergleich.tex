@@ -1,7 +1,7 @@
 \chapter{Analyse der Ergebnisse}
 
 
-Die Analyse der Ergebnisse erfolgt in vier Schritten. Die Ergebnisse der drei Algorithmen werden einzeln ausgewertet und anhand markanter Beispiele erläutert. Mit dem \gls{lda} werden die latenten Themen und Themencluster des Patentdatensatzes benannt und eingegrenzt. Mit dem \gls{hlda} werden die gefundenen Themencluster bestätigt. Der \gls{dlda} wird die Entwicklung der relevantesten Themen über die Zeit beschreiben. Abschließend werden die Ergebnisse anhand von Kennzahlen verglichen.
+Die Analyse der Ergebnisse erfolgt in vier Schritten. Die Ergebnisse der drei Algorithmen werden einzeln ausgewertet und anhand markanter Beispiele erläutert. Mit dem \gls{lda} werden die latenten Themen und Themencluster des Patentdatensatzes benannt und eingegrenzt. Mit dem \gls{hlda} sollen die gefundenen Themencluster bestätigt werden. Der \gls{dlda} wird die Entwicklung der vom \gls{lda} gebildeten Cluster über die Zeit beschreiben. Abschließend werden die Ergebnisse Diskutiert.
 
 
 %Kohärenz, Distanz, Themenanzahl, Verständlichkeit, Aufwand
@@ -17,7 +17,7 @@ Das Verfahren zur Benennung und Gruppierung der Themen besteht aus vier Schritte
 	\item Bei diesem Vorgehen werden häufig Subcluster entdeckt, die ebenfalls nach dieser Methode benannt werden
 \end{enumerate}
 
-Die Themen welche durch \gls{lda} gefunden wurden, werden mit Hilfe von \gls{pyLDAvis} benannt und visualisiert \parencite[vgl.][S. 63]{sievert2014ldavis}. \gls{pyLDAvis} ist ein Programm, das die Themen multidimensional skaliert und interaktiv darstellt. In Abbildung \ref{fig:clustering_process01} werden links die Themenradien nach Termanzahl skaliert. Die Tabelle rechts zeigt die Termhäufigkeiten im ausgewählten Thema Nummer 50 und im gesamten Korpus.
+Die Themen welche durch \gls{lda} gefunden wurden, werden mit Hilfe von \gls{pyLDAvis} benannt und visualisiert \parencite[vgl.][S. 63]{sievert2014ldavis}. \gls{pyLDAvis} ist ein Programm, das die Themen multidimensional skaliert und interaktiv darstellt. In Abbildung \ref{fig:clustering_process01} werden links die Themenradien nach Termanzahl skaliert. Die Tabelle rechts zeigt die Termwahrscheinlichkeit, im ausgewählten Thema Nummer 50 absteigend sortiert und die Häufigkeit im gesamten Korpus.
 
 \begin{landscape}
  \begin{figure}[htpb]
@@ -32,7 +32,7 @@ Die Themen welche durch \gls{lda} gefunden wurden, werden mit Hilfe von \gls{pyL
 
  
  
-In Abbildung \ref{fig:clustering_process02} wurde das $\lambda$ von $1,0$ auf $0,6$ herabgesetzt. Dadurch werden die Terme im ausgewählten Thema absteigend nach Relevanz sortiert. Der Parameter $\lambda$ soll mit dem Wert $0,6$ den Anwender die korrektesten  Themen finden lassen \parencite[vgl.][S. 66-68]{sievert2014ldavis}. Rechts wurde der Term \emph{countershaft} ausgewählt. Dadurch werden die Themenradien, abhängig von der Verteilung des ausgewählten Terms, skaliert. Die Themen 50, 20 und 83 enthalten die meisten der \emph{countershaft} Terme und sind teil des pink eingekreisten Subcluster des \emph{transmission} Clusters, aus Abbildung \ref{fig:Themengruppen_LDA_Unigramm}. Deshalb sind sie als \emph{countershaft} Themen zu werten.
+In Abbildung \ref{fig:clustering_process02} wurde das $\lambda$ von $1,0$ auf $0,6$ herabgesetzt. Dadurch werden die Terme im ausgewählten Thema absteigend nach Relevanz sortiert. Ein Term ist besonders relevant für ein Thema, wenn er eine möglichst hohe Wahrscheinlichkeit hat zu diesem Thema zu gehören und eine möglichst geringe Wahrscheinlichkeit hat zu allen anderen Themen zu gehören. Nach einer Nutzerstudie sollen Anwender mit einem  $\lambda$ Wert von $0,6$ die Themen am besten klassifizieren können \parencite[vgl.][S. 66-68]{sievert2014ldavis}. Rechts wurde der Term \emph{countershaft} (Vorgelegewelle) ausgewählt. Dadurch werden die Themenradien, abhängig von der Verteilung des ausgewählten Terms, skaliert. Die Themen 50, 20 und 83 haben für den Term \emph{countershaft} die höchste Zugehörigkeitswahrscheinlichkeit und sind teil des pink eingekreisten Subcluster des \emph{transmission} Clusters, aus Abbildung \ref{fig:Themengruppen_LDA_Unigramm}. Vereinfacht gesagt und unter der Annahme, das Modell ist korrekt, kommt der Term \emph{countershaft} sehr häufig in den drei Themen vor und sehr selten in allen anderen Themen. Da \emph{countershaft} der relevanteste und aussagekräftigste Term des 50. Themas ist wird es als das \emph{countershaft} Thema gewertet.
 
 \begin{landscape}
 	\begin{figure}[htpb]
@@ -46,30 +46,32 @@ In Abbildung \ref{fig:clustering_process02} wurde das $\lambda$ von $1,0$ auf $0
 \end{landscape}
 
  
-Außerdem kommen die äquivalenten Terme \emph{dualclutch}, \emph{dct} und \emph{automatictransmission} besonders häufig in den Themen 50, 83, 69 und 10 vor. Das ist ein weiterer Teil des Subclusters \emph{transmission}. Des weiteren sind die Terme \emph{synchronizer} und \emph{mesh} beide in den Themen 50, 70 und benachbarten Themen häufig zu finden. Das deutet auf das synchronisieren der \emph{shafts} hin. Durch dieses qualitative Verfahren werden die Themen benannt und Cluster gebildet. Doch \gls{pyLDAvis} reicht allein nicht immer aus. Thema 77 deutet mit den Termen \emph{clutch} und \emph{slip} auf eine Slipper clutch hin aber warum befindet es sich dann in dem \emph{method} Cluster? Für genauere Einblicke in Themen wurde mit \gls{lda} eine Patent-Themen-Matrix erstellt. Das Patent 9,989,146 passt am besten zu Thema 77. Es beschreibt eine Methode, welche den optimalen Druck einer \emph{clutch} in einem \gls{cvt} erlernt, damit die sie einen \emph{pulley slip} verhindern kann. Daher kommt in diesem Thema der Term \emph{pressure} ohne \emph{fluid} oder \emph{hydraulik} vor.
+Außerdem kommen die äquivalenten Terme \emph{dualclutch}, \emph{\gls{dct}} und \emph{automatictransmission} besonders häufig in den Themen 50, 83, 69 und 10 vor. Das ist ein weiterer Teil des Subclusters \emph{transmission}. Des weiteren sind die Terme \emph{synchronizer} und \emph{mesh} beide in den Themen 50, 70 und benachbarten Themen häufig zu finden. Das deutet auf das Synchronisieren der Wellen (\emph{shafts}) hin, beispielsweise mit dem ausgewählten Gang. Durch dieses qualitative Verfahren werden die Themen benannt und Cluster gebildet. Doch \gls{pyLDAvis} reicht allein nicht immer aus. Thema 77 deutet mit den Termen \emph{clutch} und \emph{slip} auf eine Slipper clutch hin aber warum befindet es sich dann nur in dem \emph{method} Cluster? Eigentlich ist es ein rein mechanisches Bauteil und der \emph{method} Cluster enthält Themen zu elektronischen Steuerung und Regelung. Für genauere Einblicke in Themen wurde mit \gls{lda} eine Patent-Themen-Matrix erstellt. Das US-Patent 9,989,146 passt am besten zu Thema 77. Es beschreibt eine Methode, welche den optimalen Druck (\emph{pressure}) einer Kupplung (\emph{clutch}) in einem Stufenlosem Getriebe (\emph{\gls{cvt}}) erlernt, damit sie ein Verrutschen des Riemens (\emph{pulley slip}) verhindern kann. Daher kommt in diesem Thema der Term \emph{pressure} ohne \emph{fluid} oder \emph{hydraulik} vor.
  
  \begin{figure}[htpb]
  	\centering
  	\includegraphics[width=\textwidth,keepaspectratio=true]{img/LDAvisGM-3-1-1_clustered.png}
  	\caption{
- 		Themengruppen der LDA Unigramme multidimensionale Skalierung
+ 		Interthematische Distanz Karte erstellt mit multidimensionaler Skalierung und qualitativer Methode zur Clusterung der Themen
  	}
  	\label{fig:Themengruppen_LDA_Unigramm}
  \end{figure}
  
- 
-Der blaue Cluster besteht hauptsächlich aus Themen zu \emph{transmission} Komponenten. Fast alle Themen des blauen Clusters enthalten die Terme \emph{transmission}, \emph{sungear} und \emph{ringgear}. Der lila Subcluster enthält das größte Thema des Datensatzes Nummer 44. Die Themen beinhalten das \emph{planetarygearset}, die \emph{multispeedtransmission} und werden zum \emph{torquetransmit} genutzt. Der türkise Cluster zeigt das Thema \gls{evt} mit einem \emph{motorgenerator} für Hybridautos. Der pinke Cluster beinhaltet die \emph{dualclutch}, die  \emph{automatictransmission}, den \emph{countershaft}, den \emph{inputshaft} und die \emph{synchronizer} welche die \emph{shafts} verbinden (\emph{mesh}). Dies wird im Patent 8,240,224 beschrieben.
- 
-Der Rote Cluster enthält besonders viele Terme wie \emph{method}, \emph{command} und \emph{request}. Der Cluster besteht daher aus Steuerungs- und Regelungsthemen von Fahrzeugen.
- 
-Im gelben Subcluster geht es hauptsächlich um die elektronische Steuerung von Kupplungen, dem Motor und dem \gls{cvt}. Er ist eine Teilmenge des orangen Subclusters, weil in dem gelben Subcluster viel häufiger der Term \emph{command} vorkommt und \emph{montior} gleichmäßiger im gesamten orangen Subcluster einschließlich des gelben Subclusters verteilt ist. Das Thema Nummer 14 ist eine Ausnahme, weil es fast gleich viele Terme von \emph{command} und \emph{monitor} für die \emph{hydraulic} \emph{pressure} enthält. Deshalb ist es extra gelb umkreist. Die \emph{frictionclutch} ist hauptsächlich dem Thema 77 zuzuordnen. Der Term \emph{slip} kommt in Verbindung mit der \emph{clutch} in den umliegenden Themen häufig vor. Auch die \emph{dogclutch} ist in dem gelben Subcluster zu finden obwohl sie hauptsächlich im Thema 5 vorkommt. Im Thema 28 geht es um die Steuerung der \emph{binary} \emph{clutch} (9,061,675), die im Thema 50 schon \emph{dualclutch} genannt wurde. Das Thema 3 umfasst das besagte \gls{cvt}. Fast alle Themen des roten Clusters sind eng verbunden mit dem \emph{engine}, besonders die Themen 41 und 33.
- 
-Der schwarze Subcluster enthält viele Themen zur Beobachtung (\emph{monitor}, \emph{sensor}) der \emph{temperature} und der \emph{pressure}. In diesem schwarzen Subcluster geht es hauptsächlich um Themen die mit Flüssigkeit in Verbindung stehen. Es geht um die \emph{hydraulic} \emph{pressure} (14), die \emph{hydraulic} \emph{pump} (45) und die \emph{temperature} des \emph{coolant} im Kühlkreislauf der \emph{electricmachine} (8,167,773), der \emph{engine} und des \emph{radiator} (57). Durch die Steuerung des Kühlkreislauf können Komponenten wie die \emph{transmission} auf Betriebstemperatur gebracht werden (10,161,501). Zu dem Thema 12 passt am besten das Patent 9,404,403, es beschreibt eine Methode um das Öllevel zu beobachten (\emph{monitor}). Auf Grund der vielen Flüssigkeitsthemen befindet sich der schwarze Subcluster in der Nähe des schwarzen Hauptclusters.
- 
-Der schwarze Hauptcluster enthält fast alle Themen die in Verbindung mit Flüssigkeit stehen. Er teilt die Häufigkeit des von \emph{control} mit dem roten Cluster aber unterscheidet sich durch die Verwendung von die Terme \emph{communication} und \emph{communicate} die sonst nur selten auftreten. Besonders häufig ist die Kombination \emph{solenoid}, \emph{hydraulic}, \emph{valve} und \emph{fluid}. Das Thema 17 beschreibt in mehreren Patenten (8,820,185
-, 8,382,639) die Steuerung einer \emph{dualclutch} mithilfe von \emph{hydraulic} und \emph{solenoids}. Mit einem Elekrtomagnet (\emph{solenoids}) wird ein Verschluss aus der \emph{valve} gezogen. Dieser Verschluss wird nach dem nach dem Ausschalten des \emph{solenoids} mit einer Feder zurück in die \emph{valve} geschoben. Mit einem \emph{solenoid} kann auch Druck erzeugt werden. Daher kommt der Term \emph{pressure} ebenfalls häufig vor. Diese Methode findet Verwendung in Thema 68, dort wird beschrieben wie eine \emph{actuator} \emph{fork} kontrolliert (\emph{control}) werden kann (9,605,755).
+Durch dieses Verfahren wurden vier Cluster und acht Subcluster gebildet. Diese Cluster werden, mit ihren Subclustern, im Uhrzeigersinn analysiert.
 
-Der dunkel grüne Cluster besteht aus sehr vielen kleinen Themen die nicht gänzlich durch thematische Nähe gruppiert wurden. Ein gemeinsamer Term ist \emph{bias} was auf Zahnräder hindeutet. Das ist leider unspezifisch. Der hellgrüne Subcluster hingegen hat zwei beschreibende Terme. \emph{shaft}, \emph{axis} und \emph{house} zeigen eine Verwandschaft mit dem pinken Subcluster, der ebenfalls \emph{shaft} \emph{house} enthält. Das \emph{house} deutet auf das gear housing hin was auch zu den Termen \emph{surface}, \emph{side} und \emph{body} passt die den gesamten dunkelgrünen Cluster bilden.
+Der blaue Cluster besteht hauptsächlich aus Themen zu \emph{transmission} Komponenten. Fast alle Themen des blauen Clusters enthalten die Terme \emph{transmission}, \emph{sungear} und \emph{ringgear}. Der violette Subcluster enthält das größte Thema des Datensatzes Nummer 44. Die Themen beinhalten das \emph{planetarygearset}, die \emph{multispeedtransmission} und werden zum \emph{torquetransmit} genutzt. Der türkisfarbene Cluster zeigt das Thema \emph{\gls{evt}} mit einem Umformer (\emph{motorgenerator}) für Hybridautos. Der pinke Cluster beinhaltet die \emph{dualclutch}, die  \emph{automatictransmission}, den \emph{countershaft}, die Antriebswelle (\emph{inputshaft}) und die \emph{synchronizer} welche die \emph{shafts} mit \emph{clutches} verbinden (\emph{mesh}). Dies wird im US-Patent 8,240,224 beschrieben.
+
+
+Der dunkel grüne Cluster besteht aus sehr vielen kleinen Themen die nicht gänzlich durch thematische Nähe gruppiert wurden. Ein gemeinsamer Term ist \emph{bias} was auf Zahnräder hindeutet. Das ist leider unspezifisch. Der hellgrüne Subcluster hingegen hat zwei beschreibende Terme. \emph{shaft}, \emph{axis} und \emph{house} zeigen eine Verwandschaft mit dem pinken Subcluster, weil er diese Terme ebenfalls häufig enthält. Das \emph{house} deutet auf das \emph{gear housing} hin was auch zu den Termen \emph{surface}, \emph{side} und \emph{body} passt die den gesamten dunkelgrünen Cluster bilden.
+
+
+Der rote Cluster enthält besonders viele Terme wie \emph{method}, \emph{command} und \emph{request}. Der Cluster besteht daher aus Steuerungs- und Regelungsthemen von mechanischen Bauteilen. Im gelben Subcluster geht es hauptsächlich um die elektronische Steuerung von Kupplungen, dem Motor und dem \emph{\gls{cvt}}. Er ist eine Teilmenge des orangen Subclusters, weil in dem gelben Subcluster viel häufiger der Term \emph{command} vorkommt und \emph{montior} gleichmäßiger im gesamten orangen Subcluster einschließlich des gelben Subclusters verteilt ist. Das Thema Nummer 14 ist eine Ausnahme, weil es fast gleich viele Terme von \emph{command} und \emph{monitor} für die \emph{hydraulic} \emph{pressure} enthält. Deshalb ist es extra gelb umkreist. Die \emph{frictionclutch} ist hauptsächlich dem Thema 77 zuzuordnen. Der Term \emph{slip} kommt in Verbindung mit der \emph{clutch} in den umliegenden Themen häufig vor. Auch die \emph{dogclutch} ist in dem gelben Subcluster zu finden obwohl sie hauptsächlich im Thema 5 vorkommt. Im Thema 28 geht es um die Steuerung der \emph{binary} \emph{clutch} (US-Patent 9,061,675), die im Thema 50 schon \emph{dualclutch} genannt wurde. Das Thema 3 umfasst das besagte \emph{\gls{cvt}}. Fast alle Themen des roten Clusters sind eng verbunden mit dem \emph{engine}, besonders die Themen 41 und 33. 
+
+
+Der schwarze Subcluster enthält viele Themen zur Beobachtung (\emph{monitor}, \emph{sensor}) der \emph{temperature} und der \emph{pressure}. In diesem schwarzen Subcluster geht es hauptsächlich um Themen die mit Flüssigkeit in Verbindung stehen. Es geht um die \emph{hydraulic} \emph{pressure} (14), die \emph{hydraulic} \emph{pump} (45) und die \emph{temperature} des \emph{coolant} im Kühlkreislauf der \emph{electricmachine} (US-Patent 8,167,773), der \emph{engine} und des \emph{radiator} (57). Durch die Steuerung des Kühlkreislauf können Komponenten wie die \emph{transmission} auf Betriebstemperatur gebracht werden (US-Patent 10,161,501). Zu dem Thema 12 passt am besten das US-Patent 9,404,403, es beschreibt eine Methode um das Öllevel zu beobachten (\emph{monitor}). Auf Grund der vielen Flüssigkeitsthemen befindet sich der schwarze Subcluster in der Nähe des schwarzen Hauptclusters.
+
+
+Der schwarze Hauptcluster enthält fast alle Themen die in Verbindung mit Flüssigkeit stehen. Er teilt die Häufigkeit des von \emph{control} mit dem roten Cluster aber unterscheidet sich durch die Verwendung von die Terme \emph{communication} und \emph{communicate} die sonst nur selten auftreten. Besonders häufig ist die Kombination \emph{solenoid}, \emph{hydraulic}, \emph{valve} und \emph{fluid}. Das Thema 17 beschreibt in mehreren US-Patenten (8,820,185, 8,382,639) die Steuerung einer \emph{dualclutch} mithilfe von \emph{hydraulic} und \emph{solenoids}. Mit einem Elekrtomagnet (\emph{solenoids}) wird ein Verschluss aus der \emph{valve} gezogen. Dieser Verschluss wird nach dem nach dem Ausschalten des \emph{solenoids} mit einer Feder zurück in die \emph{valve} geschoben. Mit einem \emph{solenoid} kann auch Druck erzeugt werden. Daher kommt der Term \emph{pressure} ebenfalls häufig vor. Diese Methode findet Verwendung in Thema 68, dort wird beschrieben wie eine \emph{actuator} \emph{fork} kontrolliert (\emph{control}) werden kann (US-Patent 9,605,755).
  
  
 %\todo[inline]{DVU, TCM, ECM, VSR, DCT, ETR? gelber cluster}
@@ -86,7 +88,8 @@ Der dunkel grüne Cluster besteht aus sehr vielen kleinen Themen die nicht gänz
 
 \section{Analyse der Ergebnisse des \gls{hlda}}
 
-Die Ergebnisse des \gls{hlda} werden im Vergleich mit den \gls{lda} Ergebnissen analysiert. Zwei Subcluster des \gls{hlda} Baums werden mit den Ergebnissen des \gls{lda} verglichen und analysiert. Der ganze \gls{hlda} Baum ist zu groß um leserlich abgebildet zu werden. Er kann im digitalen Anhang mit einem Programm geöffnet werden, das graphml unterstützt, zum Beispiel Cytoscape.
+Die Ergebnisse des \gls{hlda} werden im Vergleich mit den \gls{lda} Ergebnissen analysiert, um diese zu bestätigen. Zwei Subcluster des \gls{hlda} Baums werden mit den Ergebnissen des \gls{lda} verglichen und interpretiert. Der ganze \gls{hlda} Baum ist zu groß um leserlich abgebildet zu werden. Er kann im digitalen Anhang mit einem Programm geöffnet werden, welches das graphml-Format unterstützt, zum Beispiel Cytoscape.
+
 
 Der \emph{engine} Subcluster aus Abbildung \ref{fig:hlda_engine} passt gut zu dem orangefarbenen Subcluster aus der \gls{lda} Abbildung \ref{fig:Themengruppen_LDA_Unigramm}. Die Terme \emph{engine} und \emph{fuel} passen zu dem Motorthema 41. Die Subthema \emph{monitor} passt genau zu dem orangefarbenen Subcluster und \emph{temperature} gehört mit \emph{electricmachine} zum Thema 57. Dadurch werden die mit \gls{lda} benannten Themen bestätigt. Die Subthemen \emph{operate}, \emph{shift} und \emph{drum} sind im \gls{lda} Modell in dieser Form nicht in der Nähe aufzufinden. Allerdings passen sie thematisch zu den anderen.
 
@@ -99,7 +102,7 @@ Der \emph{engine} Subcluster aus Abbildung \ref{fig:hlda_engine} passt gut zu de
 	\label{fig:hlda_engine}
 \end{figure}
 
-Der \emph{fork} Subcluster aus Abbildung \ref{fig:hlda_fork} passt genau zu dem schwarzen Cluster aus Abbildung \ref{fig:Themengruppen_LDA_Unigramm}. Dort beschreibt das Thema 68 ebenfalls eine \emph{synchronizer actuator fork} aus dem Patent 9,605,755. Der \gls{hlda} Subcluster enthält außerdem die Subthemen \emph{valve}, \emph{spool}, \emph{cool}, \emph{pressure}, \emph{calibrate}, \emph{position} und \emph{control}. Diese kommen auch alle im \gls{lda} Cluster vor und bestätigen erneut die Ergebnisse. Die \emph{spool} ist eine Spule und daher ein Bestandteil des Elektromagneten \emph{solenoid}.
+Der \emph{fork} Subcluster aus Abbildung \ref{fig:hlda_fork} passt genau zu dem schwarzen Cluster aus Abbildung \ref{fig:Themengruppen_LDA_Unigramm}. Dort beschreibt das Thema 68 ebenfalls eine \emph{synchronizer actuator fork} aus dem US-Patent 9,605,755. Der \gls{hlda} Subcluster enthält außerdem die Subthemen \emph{valve}, \emph{spool}, \emph{cool}, \emph{pressure}, \emph{calibrate}, \emph{position} und \emph{control}. Diese kommen auch alle im \gls{lda} Cluster vor und bestätigen erneut die Ergebnisse. Die \emph{spool} ist eine Spule und daher ein Bestandteil des Elektromagneten \emph{solenoid}.
 
 \begin{figure}[htpb]
 	\centering
@@ -110,18 +113,20 @@ Der \emph{fork} Subcluster aus Abbildung \ref{fig:hlda_fork} passt genau zu dem 
 	\label{fig:hlda_fork}
 \end{figure}
 
+Die Cluster und Termwahl des \gls{hlda} sind ähnlich zum \gls{lda}. Selbst die Subcluster sind meistens passend zum \gls{lda} gebildet worden, obwohl der \gls{hlda} recht unterschiedlich zum \gls{lda}. Beispielsweise wird keine genaue Themenanzahl vorgegeben. Das eine unterschiedliche Methode zu ähnlich nachvollziehbaren Ergebnissen kommt ist ein Indiz für die Güte beider Methoden.
+
 
 \section{Analyse der Ergebnisse des \gls{dlda}}
 
-Die Ergebnisse des \gls{dlda} werden zuerst eingeordnet und die Wahl der Terme, welche die ausgewählten Cluster und Themen repräsentieren, erläutert. Dann werden die Trends der Terme festgestellt.
-
-Der \gls{dlda} wurde mit den Ergebnissen des \gls{lda} und den Anmeldedaten der Patente gespeist. Daher sind die Ergebnisse des \gls{dlda} direkt vergleichbar mit denen des \gls{lda}. Die Terme wurden so gewählt, dass sie die Cluster möglichst genau beschreiben. Außerdem sollen sie relativ selten in anderen Clustern vorkommen, damit ihr Trend nicht verfälscht wird. Diese Bedingungen der Clusterbenennung wurden in \ref{lda_analysis} berücksichtigt.
-
-Der größten Cluster heißt \emph{transmission}. In Abbildung \ref{fig:dlda_overall} verzeichnet er einen leichten Abwärtstrend. Der alternative Term \emph{selectively} bestätigt diesen Trend. Der pinke Subcluster  Deutlich stärker sinkt die relative Häufigkeit des Terms \emph{fluid}. Der Term \emph{valve} bestätigt die sinkende Zahl von Patentanmeldungen mit Bezug zu Flüssigkeiten. Die Häufigkeit verringerte sich von 2004 bis 2017 von 0,95\% auf 0,72\%. Der benachbarte Cluster \emph{method} gewinnt moderat an Häufigkeit. Er enthält hauptsächlich Patente mit Methoden zur elektronischen Steuerung und Regelung von mechanischen Bauteilen. Der Term \emph{command} bestätigt den Aufwärtstrend mit einer Erhöhung von 0,2\% auf 0,23\%. 
+Die Ergebnisse des \gls{dlda} werden zuerst eingeordnet und die Wahl der Terme, welche die ausgewählten Cluster und Themen repräsentieren, erläutert. Dann werden die Trends der Terme, im Uhrzeigersinn ihrer Cluster aus Abbildung \ref{fig:Themengruppen_LDA_Unigramm} ,analysiert.
 
 
+Der \gls{dlda} wurde mit den Ergebnissen des \gls{lda} und den Anmeldedaten der Patente gespeist. Daher sind die Ergebnisse des \gls{dlda} direkt vergleichbar mit denen des \gls{lda}. Die Terme wurden so gewählt, dass sie die Cluster möglichst genau beschreiben. Außerdem sollen sie relativ selten in anderen Clustern vorkommen, damit ihr Trend nicht verfälscht wird. Diese Bedingungen der Clusterbenennung wurden in \ref{lda_analysis} berücksichtigt. Der Trend der Cluster wird durch die relative Häufigkeit ihrer beiden relevantesten Terme pro Jahr bestimmt.
 
-  \begin{figure}[!ht]
+
+Der größten Cluster heißt \emph{transmission}. In Abbildung \ref{fig:dlda_overall} verzeichnet er einen leichten Abwärtstrend. Der alternative Term \emph{selectively} bestätigt diesen Trend. Der Subcluster von \emph{transmission} ist \emph{gear, gearset} und steigt stark an. In diesem Subcluster befindet sich auch das Thema 50 und weist in Abbildung \ref{fig:dlda_topic_50} eigene Trends auf. Der Term \emph{countershaft} ist von 2004 bis 2007 mit 12\% bis 14,7\% in diesem Thema sehr dominant und verliert bis 2010 stark an Häufigkeit. Er verbleibt dann bei 6\% bis 7\%. Der Term \emph{transmission} hingegen nimmt über den gesamten Zeitraum von 7\% bis 10,5\% zu. Der Term \emph{gear} schwankt stark und nimmt über den gesamten Zeitraum von 9,5\% bis 8,2\% leicht ab. Es ist also durchaus möglich das innerhalb der Cluster unterschiedliche Trends vorkommen. In diesem Fall sind die Trends des steigenden \emph{transmission} Themas und fallendem \emph{gear} Themas sogar gegensätzlich zum Trend ihres Clusters. Auch das \emph{ringgear} und \emph{sungear} folgen diesem Trend. Allerdings spiegelt sich der Abwärtstrend des Terms \emph{countershaft} von Thema 50 im gesamten Datensatz wieder. Dort singt die Häufigkeit von 0,21\% auf 0,14\%. Der \emph{inputshaft} und \emph{outputshaft} folgen diesem Trend. Die verwandten Terme folgen gemeinsamen Trends, das deutet auf eine korrektes Modell hin.
+
+\begin{figure}[!ht]
 	\centering
 	\begin{floatrow}
 		\ffigbox[\FBwidth]{\caption{Trends der Terme die ihren Cluster am besten beschreiben}\label{fig:dlda_overall}}{%
@@ -133,6 +138,18 @@ Der größten Cluster heißt \emph{transmission}. In Abbildung \ref{fig:dlda_ove
 	\end{floatrow}
 \end{figure}
 
+Der Cluster \emph{surface, side} zeigt kaum Veränderung. Die dort am häufigsten auftretenden Terme wie \emph{house} und \emph{body} stagnieren. Allerdings zeigt der Term \emph{axis} ein Wachstum von 2004 (0,36\%) bis zum Höhepunkt 2011 (0,51\%). Bis 2017 sinkt die Häufigkeit wieder auf 0,35\%. Dieser Term kommt genau wie \emph{house} und \emph{shaft} häufig im pinken Subcluster vor. Allerdings gibt es hier keinen gemeinsamen Trend. Die gehäufte Anmeldung von Patenten im Achsenthema um das Jahr 2011 ist ein eigener Trend.
+
+
+Die relative Häufigkeit des Terms \emph{fluid}. Der Term \emph{valve} bestätigt die sinkende Zahl von Patentanmeldungen mit Bezug zu Flüssigkeiten. Die Häufigkeit verringerte sich von 2004 bis 2017 von 0,95\% auf 0,72\%.
+
+
+Der benachbarte Cluster \emph{method, predetermine} gewinnt moderat an Häufigkeit. Er enthält hauptsächlich Patente mit Methoden zur elektronischen Steuerung und Regelung von mechanischen Bauteilen. Der Term \emph{command} bestätigt den Aufwärtstrend mit einer Erhöhung von 0,2\% auf 0,23\%. Terme wie \emph{control} und \emph{system} wurden explizit nicht ausgewählt, weil sie große Überschneidungen mit dem Flüssigkeitsthema haben.
+
+
+Der \gls{dlda} zeigt deutliche Trends wie stark sinkende Patentanmeldungen zu Flüssigkeitsthemen und steigende Anmeldungen zu Methoden Themen. Auch Trends innerhalb der Cluster zeichnen sich deutlich ab. Währen der Cluster \emph{transmission} kleiner wird, wächst der Subcluster \emph{gear}. Selbst in einzelnen Themen lassen sich Trends abbilden. Thema 50 ist anfangs ein \emph{counershaft} Thema und wird zu einem \emph{transmission} Thema.
+
+\section{Diskussion der Ergebnisse}
 
 \section{Vergleich der Ergebnisse anhand von Kennzahlen}
 Die Unigrammmodelle weisen eine niedrigere Distanz zueinander auf als die Bigrammmodelle. Das liegt daran, das es deutlich mehr Bigramme gibt und diese auch als unterschiedlich gewertet werden wenn sie sich nur teilweise unterscheiden. Ein Beispiel wäre gear gearset und gear gear. In \ref{fig:Kohärenz_Distanz_Unigramme} wird ersichtlich das sich die Kohärenz mit steigender Themenzahl verbessert bis sie gleich der Anzahl an Wörtern im Datensatz ist. Die Distanz hingegen sinkt nachdem sie einen Hochpunkt erreicht. In Abbildung 4.1 sind Muster und Hotspots aus Unigrammthemen zu erkennen, die besonders ähnlich oder unähnlich sind. Diese werden später geclustered. In Abbildung 4.2 gibt es ebenfalls Muster und Hotspots. Allerdings sind manche Bigrammthemen disjunkt, wodurch sie eine Distanz von 1 haben. 
