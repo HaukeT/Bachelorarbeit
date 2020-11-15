@@ -1,4 +1,4 @@
-\PassOptionsToPackage{usenames,dvipsnames}{xcolor}
+\PassOptionsToPackage{usenames,dvipsnames,table}{xcolor}
 
 \documentclass[
 12pt,
@@ -15,6 +15,7 @@ a4paper]{report}
 %side by side tables with seperate captions: \RawFloats
 \usepackage{floatrow}
 %reference with "Table" infront of 3.1: \cref{}
+\floatsetup[table]{capposition=top}
 
 
 \newcommand*{\appendixmore}{% S KOMA Doku S 339 
@@ -41,7 +42,7 @@ a4paper]{report}
 \usepackage[left=3.5cm,right=2.5cm,top=2.5cm,bottom=2cm,includeheadfoot]{geometry}
 \linespread{1.5}
 \usepackage{lscape}
-
+\usepackage{parskip}
 \usepackage{fancyhdr}
 
 \pagestyle{fancy}
@@ -181,7 +182,8 @@ a4paper]{report}
 % Programmcode
 \usepackage{listings}
 \usepackage{diagbox,array,graphicx}
-\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage[usenames,dvipsnames,table]{xcolor}
+\usepackage{colortbl}
 
 \definecolor{anti-flashwhite}{rgb}{0.95, 0.95, 0.96}
 \definecolor{lightgray}{rgb}{.9,.9,.9}
@@ -605,7 +607,6 @@ CanCreateInstance, LogName, Message, MessageNumber, Expression,CorrelationHandle
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usepackage[framemethod=TikZ]{mdframed}
-\usepackage{xcolor}
 \usepackage[all]{hypcap}
 %\usepackage{longtable}
 
