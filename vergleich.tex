@@ -94,6 +94,10 @@ Der schwarze Subcluster enthält viele Themen zur Beobachtung (\emph{monitor}, \
 Der schwarze Hauptcluster enthält fast alle Themen die in Verbindung mit Flüssigkeit stehen. Er teilt die Häufigkeit des Terms \emph{control} mit dem roten Cluster aber unterscheidet sich durch die Verwendung von den Termen \emph{communication} und \emph{communicate}, die sonst nur selten auftreten. Besonders häufig ist die Kombination Elektromagnet (\emph{solenoid}), \emph{hydraulic}, \emph{valve} und \emph{fluid}. Das Thema 17 beschreibt in mehreren US-Patenten (8,820,185, 8,382,639) die Steuerung einer \emph{dualclutch}, mithilfe von \emph{hydraulic} und \emph{solenoids}. Mit einem \emph{solenoid} wird ein Verschluss aus der \emph{valve} gezogen. Dieser Verschluss wird nach dem nach dem Ausschalten des \emph{solenoids} von einer Feder zurück in die \emph{valve} geschoben. Mit einem \emph{solenoid} kann auch Druck erzeugt werden. Daher kommt der Term \emph{pressure} ebenfalls häufig vor. Diese Methode findet Verwendung in Thema 68, dort wird beschrieben wie eine Aktuatorgabel (\emph{actuator} \emph{fork}) kontrolliert (\emph{control}) werden kann (US-Patent 9,605,755).
  
  
+ Die Ergebnisse des \gls{lda} zeigen das in dem Patentdatensatz von \gls{gm} hauptsächlich um Getriebe geht. Darunter ist größtenteils das Doppelkupplungsgetriebe (\emph{\gls{dct}}) und Stufenlose Getriebe wie \emph{\gls{cvt}} und die elektrische Variante \emph{\gls{evt}}. Manuelle Getriebe kommen seltener vor. Außerdem sind viele Patente vorhanden zu den verschiedenen Kupplungen dieser Getriebe. Darunter sind die Rutschkupplung (\emph{friction clutch}) und Klauenkupplung (\emph{dog clutch}). Auch die verschiedenen Wellen kommen häufig vor, die durch Kupplungen und Zahnräder verbunden werden. Die Wellen sind unter anderem die Antriebswelle (\emph{inputshaft}), Abtriebswelle (\emph{outputshaft}), Vorgelegewelle (\emph{countershaft}) und die Kurbelwelle (\emph{crankshaft}). Häufig geht es in Verbindung mit dem Wellen auch um das Differentialgetriebe (\emph{differential}). Es kommen auch besondere Zahnradkonstruktionen wie das Planetengetriebe (\emph{planetarygear}) vor. Die Getriebe werden in Gehäusen (\emph{house}) verbaut. Die Steuerung der Getriebe erfolgt elektrisch mit Aktuatoren (\emph{actuator}) oder hydraulisch mit Elektromagneten (\emph{solenoid}).
+ 
+
+
 %\todo[inline]{DVU, TCM, ECM, VSR, DCT, ETR? gelber cluster}
  
 %Der orange Subcluster 
@@ -167,17 +171,19 @@ Die relative Häufigkeit des Terms \emph{fluid}. Der Term \emph{valve} bestätig
 Der benachbarte Cluster \emph{method, predetermine} gewinnt moderat an Häufigkeit. Er enthält hauptsächlich Patente mit Methoden zur elektronischen Steuerung und Regelung von mechanischen Bauteilen. Der Term \emph{command} bestätigt den Aufwärtstrend mit einer Erhöhung von 0,2\% auf 0,23\%. Terme wie \emph{control} und \emph{system} wurden explizit nicht ausgewählt, weil sie große Überschneidungen mit dem Flüssigkeitsthema haben.
 
 
-Der \gls{dlda} zeigt deutliche Trends wie stark sinkende Patentanmeldungen zu Flüssigkeitsthemen und steigende Anmeldungen zu Methoden Themen. Auch Trends innerhalb der Cluster zeichnen sich deutlich ab. Währen der Cluster \emph{transmission} kleiner wird, wächst der Subcluster \emph{gear}. Selbst in einzelnen Themen lassen sich Trends abbilden. Thema 50 ist anfangs ein \emph{counershaft} Thema und wird zu einem \emph{transmission} Thema.
+Der \gls{dlda} zeigt deutliche Trends, wie stark sinkende Patentanmeldungen zu Flüssigkeitsthemen und steigende Anmeldungen zu Methoden Themen. Die Schlussfolgerung liegt nahe das mehr Patente mit elektrischen Aktuatoren (\emph{actuator}) zur Steuerung und Reglung der Getriebe angemeldet werden und weniger hydraulische Patente mit Elektromagneten (\emph{solenoid}). Das ist ein Trugschluss. Die Trends der großen Cluster dürfen nicht verallgemeinert werden, denn das Gegenteil ist der Fall, die Aktuatorpatente werden seltener und die Hydraulikpatente werden häufiger angemeldet. Auch die Trends innerhalb der Cluster zeichnen sich deutlich ab. Währen der Cluster \emph{transmission} kleiner wird, wächst der Subcluster \emph{gear}. Selbst in einzelnen Themen lassen sich Trends abbilden. Thema 50 ist anfangs ein \emph{counershaft} Thema und wird zu einem \emph{transmission} Thema. Daher ist es notwendig die Trends der einzelnen Terme zu beobachten, die Trends der großen Cluster können andere sein.
+
 
 \section{Diskussion der Ergebnisse}
 
-\section{Vergleich der Ergebnisse anhand von Kennzahlen}
-Die Unigrammmodelle weisen eine niedrigere Distanz zueinander auf als die Bigrammmodelle. Das liegt daran, das es deutlich mehr Bigramme gibt und diese auch als unterschiedlich gewertet werden wenn sie sich nur teilweise unterscheiden. Ein Beispiel wäre gear gearset und gear gear. In \ref{fig:Kohärenz_Distanz_Unigramme} wird ersichtlich das sich die Kohärenz mit steigender Themenzahl verbessert bis sie gleich der Anzahl an Wörtern im Datensatz ist. Die Distanz hingegen sinkt nachdem sie einen Hochpunkt erreicht. In Abbildung 4.1 sind Muster und Hotspots aus Unigrammthemen zu erkennen, die besonders ähnlich oder unähnlich sind. Diese werden später geclustered. In Abbildung 4.2 gibt es ebenfalls Muster und Hotspots. Allerdings sind manche Bigrammthemen disjunkt, wodurch sie eine Distanz von 1 haben. 
+\gls{lda} ist ein robustes Verfahren, um die verstecken Themen großer Textmengen herauszufinden, ohne alle Texte selbst lesen zu müssen. Allerdings müssen die Ergebnisse immer überprüft werden. Denn die Ergebnisse sind stark abhängig von den Daten und Parametern. Selbst Patente bringen sprachliche Ungenauigkeiten mit sich, wie Synonyme die man im Preprocessing nur sehr schwer voll umfänglich erfassen kann. Dadurch behandelt das Modell \emph{dualclutch} und \emph{binaryclutch} unterschiedlich, obwohl sie die selbe Bedeutung haben.
+
+Das Modell der Bigramme wurde nicht weiter analysiert, weil es sich bei weitem nicht so gut interpretieren ließ wie das der Unigramme. Obwohl die Kennzahlen des Bigrammmodells deutlich besser sind als die des Unigrammmodells. Das Bigrammmodell sollte viel kohärenter und die Themen viel distanzierter sein als die des Unigrammmodells wie in der Tabelle \ref{table:Kohärenzen} abzulesen ist. Die Vergleiche der Distanz für jedes Thema befinden sich im Anhang als Abbildung Unigramme \ref{fig:Distanz_Unigramme} und Bigramme \ref{fig:Distanz_Bigramme}. Die Abbildung \ref{fig:MDS_Bigramme} zeigt das sich die Themen nicht gut in Cluster unterteilen lassen, weil die meisten sich direkt nebeneinander befinden. Das könnte an unvorteilhaft zusammengeschriebenen Termen wie \emph{clutch dualclutch} liegen, weil sie wahrscheinlich zwei Themen hervorrufen, anstatt nur das Thema \emph{dual clutch}.
 
 \begin{table}
 	\RawFloats
 	\centering
-	\caption{Kohärenzen}
+	\caption{Kohärenzen des Unigramm- und Bigrammmodells, niedriger ist besser}
 	\begin{tabular}{|c|c|c|}
 		\hline
 		Modell & Unigramm & Bigramm \\
@@ -192,18 +198,10 @@ Die Unigrammmodelle weisen eine niedrigere Distanz zueinander auf als die Bigram
 
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=\textwidth,height=12cm,keepaspectratio=true]{img/unigram_jaccard_50_green_07.png}
+	\includegraphics[width=\textwidth,keepaspectratio=true]{img/LDAvisGM-3-2-5blank.png}
 	\caption{
-		Distanz zwischen den top 50 Unigrammen der Themen
+		Interthematische Distanz Karte der Bigramme, erstellt mit multidimensionaler Skalierung bei einem von $\lambda = 1,0$
 	}
-	\label{fig:Distanz_Unigramme}
+	\label{fig:MDS_Bigramme}
 \end{figure}
 
-\begin{figure}[htpb]
-	\centering
-	\includegraphics[width=\textwidth,height=12cm,keepaspectratio=true]{img/bigram_jaccard_50_green_07.png}
-	\caption{
-		Distanz zwischen den top 50 Bigrammen der Themen
-	}
-	\label{fig:Distanz_Bigramme}
-\end{figure}
