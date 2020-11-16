@@ -1,7 +1,7 @@
 \chapter{Analyse der Ergebnisse}
 
 
-Die Analyse der Ergebnisse erfolgt in vier Schritten. Die Ergebnisse der drei Algorithmen werden einzeln ausgewertet und anhand markanter Beispiele erläutert. Mit dem \gls{lda} werden die latenten Themen und Themencluster des Patentdatensatzes benannt und eingegrenzt. Mit dem \gls{hlda} sollen die gefundenen Themencluster bestätigt werden. Der \gls{dlda} wird die Entwicklung der vom \gls{lda} gebildeten Cluster über die Zeit beschreiben. Abschließend werden die Ergebnisse Diskutiert.
+Die Analyse der Unigrammergebnisse erfolgt in vier Schritten. Die Ergebnisse der drei Algorithmen werden einzeln ausgewertet und anhand markanter Beispiele erläutert. Mit dem \gls{lda} werden die latenten Themen und Themencluster des Patentdatensatzes benannt und eingegrenzt. Mit dem \gls{hlda} sollen die gefundenen Themencluster bestätigt werden. Der \gls{dlda} wird die Entwicklung der vom \gls{lda} gebildeten Cluster über die Zeit beschreiben. Abschließend werden die Ergebnisse diskutiert und Lösungen gesucht, um die Bigrammergebnisse zu verbessern.
 
 
 %Kohärenz, Distanz, Themenanzahl, Verständlichkeit, Aufwand
@@ -22,11 +22,12 @@ Die Themen welche durch \gls{lda} gefunden wurden, werden mit Hilfe von \gls{pyL
 \begin{landscape}
  \begin{figure}
 	\centering
+	\label{fig:clustering_process01}
 	\includegraphics[width=19.29cm,keepaspectratio=true]{img/clustering_process01.png}
 	\caption{
-		Interthematische Distanz Karte erstellt mit multidimensionaler Skalierung und die relevantesten Terme für das Thema Nummer 50 bei einem $\lambda = 1,0$
+		Interthematische Distanzkarte erstellt mit multidimensionaler Skalierung und die relevantesten Terme für das Thema Nummer 50 bei einem $\lambda = 1,0$
 	}
-	\label{fig:clustering_process01}
+	
  \end{figure}
 \end{landscape}
 
@@ -39,7 +40,7 @@ In Abbildung \ref{fig:clustering_process02} wurde das $\lambda$ von $1,0$ auf $0
 		\centering
 		\includegraphics[width=19.29cm,keepaspectratio=true]{img/clustering_process02.png}
 		\caption{
-			Interthematische Distanz Karte erstellt mit multidimensionaler Skalierung mit einer Themenverteilung welche von dem Term countershaft abhängt und die relevantesten Terme für das Thema Nummer 50 bei einem $\lambda = 0,6$ 
+			Interthematische Distanzkarte erstellt mit multidimensionaler Skalierung mit einer Themenverteilung welche von dem Term countershaft abhängt und die relevantesten Terme für das Thema Nummer 50 bei einem $\lambda = 0,6$ 
 		}
 		\label{fig:clustering_process02}
 	\end{figure}
@@ -68,9 +69,9 @@ Außerdem kommen die äquivalenten Terme \emph{dualclutch}, \emph{\gls{dct}} und
 		\hline
 		\cellcolor{violet}& planetarygearset & \cellcolor{orange} & monitor & \cellcolor{OliveGreen} & surface, side, extend \\
 		\hline
-		\cellcolor{pink}& gear, gearset  & \cellcolor{yellow} & command & \cellcolor{green} & axis, house \\
+		\cellcolor{magenta}& gear, gearset  & \cellcolor{yellow} & command & \cellcolor{green} & axis, house \\
 		\hline
-		\cellcolor{teal}& motorgenerator, EVT & \cellcolor{gray} & temperature, sensor & \cellcolor{brown} & mount \\
+		\cellcolor{cyan}& motorgenerator, EVT & \cellcolor{gray} & temperature, sensor & \cellcolor{brown} & mount \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -200,7 +201,7 @@ Das Modell der Bigramme wurde nicht weiter analysiert, weil es sich bei weitem n
 	\centering
 	\includegraphics[width=\textwidth,keepaspectratio=true]{img/LDAvisGM-3-2-5blank.png}
 	\caption{
-		Interthematische Distanz Karte der Bigramme, erstellt mit multidimensionaler Skalierung bei einem von $\lambda = 1,0$
+		Interthematische Distanzkarte der Bigramme, erstellt mit multidimensionaler Skalierung bei einem von $\lambda = 1,0$
 	}
 	\label{fig:MDS_Bigramme}
 \end{figure}

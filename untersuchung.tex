@@ -1,22 +1,27 @@
 \chapter{Methodik und Ergebnisse}
 
+Um den Inhalt des Patentdatensatzes zu erforschen müssen die Patente zuerst im Preprocessing in eine maschinenlesbare Form gebracht werden. Diese Daten werden dann zu Modellen verarbeitet und die besten Modelle anhand von Kennzahlen ausgewählt. Der Algorithmus \gls{lda} erzeugt die Themen welche später in der Analyse einem qualitativen Verfahren gruppiert und benannt werden. Mit dem \gls{hlda} Algorithmus können die Gruppen bestätigt werden. Der \gls{dlda} Algorithmus zeigt die Trends der \gls{lda} Terme auf.
+
 \section{Patentdatensatz}
-Der Patentdatensatz enthält ausschließlich Patente von \acl{gm} (\ac{gm}), die durch das Tochterunternehmen \ac{gm} Global Technology Operations angemeldet wurden. Mit der Suchanfrage ((AN/\enquote{GM Global} AND ((ICL/F16H\$ AND APD/20040101->20121231) OR (CPC/F16H\$ AND APD/20130101->20181231))) AND ISD/20040101->20181231) \todo[inline]{diese Gänsefüßchen muss man in der Suchanfrage bis jetzt manuell ersetzen} lassen sich die 1411 Dokumente auf der Internetseite des United States Patent and Trademark Office einsehen. 
+Der Patentdatensatz wurde mit der Software Query4Files in der Datenbank Lucene erstellt. Es wurden 1410 Dokumente gesammelt. Der Datensatz enthält ausschließlich Patente von \gls{gm}, die durch das Tochterunternehmen \gls{gm} Global Technology Operations angemeldet wurden. Ein Patent ist ein Schutzrecht für eine Erfindung \parencite[vgl.][S. 17]{world2004wipo}. Das Patent beschreibt die Erfindung detailliert und kann vom Erfinder beim Staat beantragt werden. Wenn es genehmigt wird, kann der Erfinder anderen Bedingungen für die Nutzung seines Patents stellen.
+
+%Mit der Suchanfrage ((AN/\enquote{GM Global} AND ((ICL/F16H\$ AND APD/20040101->20121231) OR (CPC/F16H\$ AND APD/20130101->20181231))) AND ISD/20040101->20181231)
 %http://patft.uspto.gov/netacgi/nph-Parser?Sect1=PTO2&Sect2=HITOFF&p=1&u=%2Fnetahtml%2FPTO%2Fsearch-adv.htm&r=0&f=S&l=50&d=PTXT&Query=AN%2F%28%22GM+Global%22%29+AND+%28%28ICL%2FF16H%24+AND+APD%2F20040101-%3E20121231%29+OR+%28CPC%2FF16H%24+AND+APD%2F20130101-%3E20181231%29%29+AND+ISD%2F20040101-%3E20181231
 
 \section{Preprocessing}
-Das Preprocessing wurde mit dem PatVisor\textregistered, das Patentanalysewerkzeug vom \acl{ipmi} (\ac{ipmi}), durchgeführt. Dazu wurde vom \ac{ipmi} ein themenbezogener Synonymfilter bereitgestellt. Aus den Patenten wurde nur der Titel, der Abstract und die Claims als Text verwendet. Die Anmeldedaten wurden als Metadaten für \ac{dlda} verwendet. Die Texte wurden mit dem Patvisor lemmatisiert. Das Lemma ist die Grundform eines Wortes und wird hier verwendet damit die Häufigkeit des Wortes bestimmt werden kann, einschließlich aller Varianten. Herausgefiltert wurden Artikel, Pronomen und Ähnliches das nur im Kontext eine Bedeutung hat und daher im \acl{bow} Modell irrelevant ist. Außerdem wurden manuell Abkürzungen erfasst wie \acl{cvt} (\ac{cvt}). Bigramme wurden in einem Fenster von fünf Worten erstellt, das über den Text rolliert. Die Worte eines Fensters wurden ohne Wiederholung permutiert. Die Wörter in einer \acl{tdm} (\ac{tdm}) gespeichert.
+Das Preprocessing dient dazu die Dokumente so zu filtern, dass sie ein Programm lesen kann. Das Preprocessing wurde mit dem PatVisor\textregistered, das Patentanalysewerkzeug vom \gls{ipmi}, durchgeführt \parencite[vgl.][S. 159-164]{walter2016patentmanagement}. Dazu wurde vom \gls{ipmi} ein themenbezogener Synonymfilter bereitgestellt. Aus den Patenten wurde nur der Titel, der Abstract und die Claims als Text verwendet. Die Texte wurden mit dem Patvisor lemmatisiert. Das Lemma ist die Grundform eines Wortes und wird hier verwendet damit die Häufigkeit des Wortes bestimmt werden kann, einschließlich aller Varianten. Herausgefiltert wurden Artikel, Pronomen und Ähnliches das nur im Kontext eine Bedeutung hat und daher im \gls{bow} Modell irrelevant ist. Außerdem wurden manuell Abkürzungen erfasst wie \gls{cvt}. So werden die Worte zu Unigrammen und werden Terme genannt. Bigramme bestehen aus zwei Termen. Die Bigramme wurden in einem Fenster von fünf Worten erstellt, das über den Text rolliert. Die Worte eines Fensters wurden ohne Wiederholung permutiert. Die Wörter in einer \gls{tdm} gespeichert.
 
 \section{Durchführung des Topic Modeling}
 
 \subsection{LDA}
-Das Topic Modeling wurde nach dem Preprocessing in vier Schritten implementiert: Wörterbuch- und Korpuserzeugung, \ac{lda}, Evaluation, Visualisierung. Gensim ist eine Python library für Textanalyse. Ein Teil des Codes wurde vom IPMI bereitgestellt. Zuerst wird aus der \ac{tdm} des Preprocessings ein Wörterbuch und ein Korpus erstellt. Das Wörterbuch indiziert jedes Wort und speichert die Häufigkeit des Wortes aus dem gesamten Korpus. Der Korpus verbindet die Indizes der Wörter mit den Indizes der Dokumente und speichert die Häufigkeit der Wörter pro Dokument.
+Das Topic Modeling wurde nach dem Preprocessing in vier Schritten mit der Programmiersprache Python implementiert: Wörterbuch- und Korpuserzeugung, \gls{lda}, Evaluation, Visualisierung. Dieser Vorgang muss für Unigramme und Bigramme einzeln Durchgeführt werden. Der Vorgang ist bei beiden sehr ähnlich.  Gensim ist eine Python library für Textanalyse. Die Skripte zur Durchführung von \gls{lda} und \gls{dlda} wurden vom IPMI bereitgestellt. Diese Skripte wurden von mir modifiziert, um \gls{lda} und \gls{dlda} vergleichen zu können. Im ersten Schritt wird aus der \gls{tdm} des Preprocessings ein Wörterbuch und ein Korpus erstellt, ein Ausschnitt ist in Tabelle \ref{table:words} und \ref{table:corpus} dargestellt. Das Wörterbuch indiziert jedes Wort und speichert die Häufigkeit des Wortes aus dem gesamten Korpus. Der Korpus verbindet die Indizes der Wörter mit den Indizes der Dokumente und speichert die Häufigkeit der Wörter pro Dokument.
 
 \begin{table}[!htb]
 	\RawFloats
 	\begin{minipage}{.5\linewidth}
 		\caption{Wörterbuch}
 		\centering
+		\label{table:words}
 		\begin{tabular}{|c|c|c|}
 			\hline 
 			Dokument ID & Wort ID & Häufigkeit \\ 
@@ -32,6 +37,7 @@ Das Topic Modeling wurde nach dem Preprocessing in vier Schritten implementiert:
 	\begin{minipage}{.5\linewidth}
 		\centering
 		\caption{Korpus}
+		\label{table:corpus}
 		\begin{tabular}{|c|c|c|}
 			\hline 
 			Wort ID & Wort & Häufigkeit \\ 
@@ -46,9 +52,9 @@ Das Topic Modeling wurde nach dem Preprocessing in vier Schritten implementiert:
 	\end{minipage} 
 \end{table}
 
-Ein Thema wird für Menschen durch die wahrscheinlichsten Wörter ersichtlich. \parencite[vgl.][S. 265-266]{mimno2011optimizing} Mit der Kohärenz eines Themas ist der semantische Zusammenhang zwischen diesen Wörtern gemeint. Diese Kohärenz kann man durch das gemeinsame Auftreten von Wörtern in einer Gruppe berechnen. Das u\_mass Maß funktioniert nach diesem Prinzip, benannt nach der Universität von Massachusetts. Es gibt auch andere Kohärenzmaße wie das c\_v Maß, die eine bestimmte Anzahl an Wörtern in einem Schiebefenster betrachten. Dadurch wird ein feinerer Kontext betrachtet anstatt das gesamte Dokument. Allerdings wird hier u\_mass verwendet, weil es aufgrund des fehlenden Schiebefensters auch bei Bigrammen funktioniert.
+Ein Thema wird für Menschen durch die wahrscheinlichsten Wörter ersichtlich. Mit der Kohärenz eines Themas ist der semantische Zusammenhang zwischen diesen Wörtern gemeint. Diese Kohärenz kann man durch das gemeinsame Auftreten von Wörtern in einer Gruppe berechnen. Das u\_mass Maß funktioniert nach diesem Prinzip, benannt nach der Universität von Massachusetts \parencite[vgl.][S. 265-266]{mimno2011optimizing}. Es gibt auch andere Kohärenzmaße wie das c\_v Maß, die eine bestimmte Anzahl an Wörtern in einem Schiebefenster betrachten. Dadurch wird ein feinerer Kontext betrachtet anstatt das gesamte Dokument. Allerdings wird hier u\_mass verwendet, weil es universal nutzbar ist und aufgrund des fehlenden Schiebefensters auch bei Bigrammen funktioniert. Das ist hier kein Nachteil, weil die bereinigten Patentexte recht kurz sind im Vergleich zu Büchern. Dort würde ein Schiebefenster sinnvoll sein.
 
-Die Distanz zwischen zwei Themen ist die Unterschiedlichkeit der Wörter zweier Themen. Eine Methode der Berechnung ist der Jaccard-Koeffizient. Diese ist die Mächtigkeit der Schnittmenge dividiert durch die Mächtigkeit der Vereinigungsmenge zweier Themen.
+Die Distanz zwischen zwei Themen ist die Unterschiedlichkeit der Wörter zweier Themen. Eine Methode der Berechnung ist der Jaccard-Koeffizient. Diese ist die Mächtigkeit der Schnittmenge dividiert durch die Mächtigkeit der Vereinigungsmenge zweier Themen \parencite[vgl.][S. 1]{kosub2019note}.
 
 
 \begin{center}
@@ -56,10 +62,10 @@ Die Distanz zwischen zwei Themen ist die Unterschiedlichkeit der Wörter zweier 
 \end{center}
 
 
-Danach wird \ac{lda} angewandt. Die Hyperparameter Alpha und Beta werden auf der Einstellung auto belassen, um die Werte selbst zu erlernen. Die Iterationen werden auf 20.000 gesetzt und die minimale Wahrscheinlichkeit beträgt null. Dadurch wird jedem Dokument und jedem Term eine Zugehörigkeitswahrscheinlickeit für jedes Thema zugeordnet, auch wenn die Wahrscheinlichkeit gering ist. \ac{lda} benötigt eine vorgegebene Anzahl an Themen. Um eine möglichst kohärente und interpretierbare Anzahl an Themen zu finden, werden für die Unigramme alle Modelle bis zu 300 Themen erstellt. Da die Kohärenz der Bigramme bereits ab 51 Themen ein Plateau erreicht wurde die Themenerstellung ab 100 abgebrochen. Mit zunehmender Themenanzahl steigt zwar auch die Kohärenz aber so viele Themen sind nicht sinnvoll interpretierbar. Der Vorteil des \ac{lda} ist schließlich die Zeit, welche benötigt wird einen Datensatz zu verstehen, zu verringern. Mit zunehmender Zahl an Themen sinkt außerdem die Distanz zwischen den Themen, was zu ähnlichen Themen führt. Eigentlich ist eine hohe Kohärenz beim u\_mass negativ. Damit Kohärenz und Distanz in einem Diagramm dargestellt werden können wurde von der Kohärenz der absolute Wert genommen.
+Im zweiten Schritt wird \gls{lda} angewandt. Die Hyperparameter Alpha und Beta werden auf der Einstellung auto belassen, um die Werte selbst zu erlernen. Die Iterationen werden auf 20.000 gesetzt und die minimale Wahrscheinlichkeit beträgt null. Dadurch wird jedem Dokument und jedem Term eine Zugehörigkeitswahrscheinlickeit für jedes Thema zugeordnet, auch wenn die Wahrscheinlichkeit gering ist. \gls{lda} benötigt eine vorgegebene Anzahl an Themen. Um eine möglichst kohärente und interpretierbare Anzahl an Themen zu finden, werden für die Unigramme alle Modelle bis zu 300 Themen erstellt. Da die Kohärenz der Bigramme bereits ab 51 Themen ein Plateau erreicht wurde die Themenerstellung ab 100 abgebrochen. Mit zunehmender Themenanzahl steigt zwar auch die Kohärenz aber so viele Themen sind nicht sinnvoll interpretierbar. Der Vorteil des \gls{lda} ist schließlich die Zeit, welche benötigt wird einen Datensatz zu verstehen, zu verringern. Mit zunehmender Zahl an Themen sinkt außerdem die Distanz zwischen den Themen, was zu ähnlichen Themen führt. Eigentlich ist eine hohe Kohärenz beim u\_mass negativ. Damit Kohärenz und Distanz in einem Diagramm dargestellt werden können wurde von der Kohärenz der absolute Wert genommen.
 
 \begin{landscape}
-\begin{figure}[htpb]
+\begin{figure}
 	\centering
 	\includegraphics[width=\textwidth,keepaspectratio=true]{img/coherenceAndDistanceUnigram.png}
 	\caption{
@@ -77,30 +83,29 @@ Die Kohärenz der LDA Modelle wird mit dem u\_mass Maß bestimmt. Von eins wird 
 \end{center}
 
 
-Bei den Unigrammen sind es in Abbildung \ref{fig:Kohärenz_Distanz_Unigramme} 83 Themen. Bei den Bigrammen funktioniert diese Methode nicht so gut, um ein Plateau zu finden. Sie schlägt zehn Themen vor, was zu einem sehr groben Modell führt. Wie die Abbildung \ref{fig:Kohärenz_Distanz_Bigramme} zeigt wird eine hohe Kohärenz und Distanz bei der Themenanzahl von 51 erreicht. Mit der Anzahl wurde ein deutlich granulareres Modell erstellt. 
+Bei den Unigrammen sind es in Abbildung \ref{fig:Kohärenz_Distanz_Unigramme} bei dem rot markiertem Punkt 83 Themen. Die absolute Kohärenzsteigerung ist gelb markiert. Bei den Bigrammen funktioniert diese Methode nicht so gut, um ein Plateau zu finden. Sie schlägt zehn Themen vor, was zu einem sehr groben Modell führt. Wie die Abbildung \ref{fig:Kohärenz_Distanz_Bigramme} zeigt wird eine hohe lokale Kohärenz und Distanz bei der Themenanzahl von 51 erreicht. Das Thema 51 wurde rot markiert. Mit der Anzahl wurde ein deutlich granulareres Modell erstellt. 
 
-\begin{figure}[htpb]
+\begin{landscape}
+\begin{figure}
 	\centering
-	\includegraphics[width=\textwidth,height=10cm,keepaspectratio=true]{img/coherenceAndDistanceBigram.png}
+	\includegraphics[width=\textwidth,keepaspectratio=true]{img/coherenceAndDistanceBigram.png}
 	\caption{
 		Kohärenz und Distanz der Themen mit Bigrammen
 	}
 	\label{fig:Kohärenz_Distanz_Bigramme}
 \end{figure}
+\end{landscape}
 
-
- 
-
-Im letzten Schritt werden die Daten als Themenliste, Dokument-Themen und Themen-Wort Matrizen gespeichert. Mit  pyLDAvis wird eine interaktive multidimensional skalierte Visualisierung erstellt. Diese Visualisierung berücksichtigt die Distanz und die Größe der Themen.
+Im letzten Schritt werden die Daten als Themenliste, Dokument-Themen und Themen-Wort Matrizen gespeichert. Mit \gls{pyLDAvis} wird eine interaktive multidimensional skalierte Visualisierung erstellt. Diese Visualisierung berücksichtigt die Distanz und die Größe der Themen.
 
 
 \subsection{Hierarchisches LDA}
 
-Tomotopy ist ebenfalls eine Python library für Textanalyse. Sie ist ähnlich zu Gensim aber ist besonders performant und unterstützt zusätzlich \ac{hlda}, allerdings keine Kohärenzmaße. Deshalb werden hier beide librarys verwendet, um die jeweiligen Funktionen zu nutzen.
+Tomotopy ist ebenfalls eine Python library für Textanalyse. Sie ist ähnlich zu Gensim aber ist besonders performant und unterstützt zusätzlich \gls{hlda}, allerdings keine Kohärenzmaße. Deshalb werden hier beide librarys verwendet, um die jeweiligen Funktionen zu nutzen.
 
-Die Wörter der Dokumente werden in eine Liste aus Listen geladen. Für \ac{hlda} wird keine Themenanzahl benötigt aber einige Parameter aus der Tabelle \ref{table:HLDA_Parameter} die \ac{lda} in Gensim selbst erlernt. Der \ac{hlda} verwirft die ersten 10.000 Iterationen und erstellt danach zehn Modelle mit einem Abstand von jeweils 100 Iterationen. \parencite[vgl.][S. 6]{griffiths2004hierarchical} \todo[inline]{25 random restarts to avoid local maxima, take highest posterior likelihood} In Abbildung \ref{fig:HLDA_Unigram_Baum} hat sich ein drei Ebenen tiefes Baumdiagramm als übersichtlich erwiesen, um Überthemen zu finden und Unterthemen zu clustern.
+Die Wörter der Dokumente werden in eine Liste aus Listen geladen. Für \gls{hlda} wird keine Themenanzahl benötigt aber einige Parameter aus der Tabelle \ref{table:HLDA_Parameter} die \gls{lda} in Gensim selbst erlernt. Der \gls{hlda} verwirft die ersten 10.000 Iterationen und erstellt danach zehn Modelle mit einem Abstand von jeweils 100 Iterationen \parencite[vgl.][S. 6]{griffiths2004hierarchical}. In Abbildung \ref{fig:HLDA_Unigram_Baum} hat sich ein drei Ebenen tiefes Baumdiagramm als übersichtlich erwiesen, um Überthemen zu finden und Unterthemen zu clustern.
 
-\begin{table}
+\begin{table}[H]
 	\RawFloats
 	\centering
 	\caption{HLDA Parameter}
@@ -108,29 +113,18 @@ Die Wörter der Dokumente werden in eine Liste aus Listen geladen. Für \ac{hlda
 		\hline 
 		Name& iter. & seed & TW & $\alpha$ & $\eta$ & $\gamma$ & depth & rm\_top & burn\_in \\ 
 		\hline 
-		Unigramme& 1000 & 100 & \ac{tf-idf} & 0,3 & 0,6 & 0,15 & 3 & 1 & 10.000 \\ 
+		Unigramme& 1000 & 100 & tf-idf & 0,3 & 0,6 & 0,15 & 3 & 1 & 10.000 \\ 
 		\hline 
-		Bigramme& 1000 & 100 & \ac{tf-idf} & 0,3 & 0,6 & 0,15 & 3 & 1 & 10.000  \\ 
+		Bigramme& 1000 & 100 & tf-idf & 0,3 & 0,6 & 0,15 & 3 & 1 & 10.000  \\ 
 		\hline  
 	\end{tabular}
 	\label{table:HLDA_Parameter}
 \end{table} 
 
-Die Term Frequency-Inverse Document Frequency (\ac{tf-idf}) wird benutzt, um herauszufinden wie stark ein Wort zu einem Dokument gehört in einer Menge von Dokumenten. \parencite{luhn1957statistical}  \parencite{jones1972statistical} Der wert steigt mit mit der Frequenz des Wortes in einem Dokument und sinkt mit der Anzahl an Dokumenten in denen das Wort vorkommt.
-
-\begin{figure}[htpb]
-	\centering
-	\includegraphics[height=15cm,width=\textwidth,keepaspectratio=true]{img/tree.png}
-	\caption{
-		HLDA Unigram Baumdiagramm
-	}
-	\label{fig:HLDA_Unigram_Baum}
-\end{figure}
+Die \gls{tf-idf} wird benutzt, um herauszufinden wie stark ein Wort zu einem Dokument gehört in einer Menge von Dokumenten \parencite[vgl.][]{luhn1957statistical}  \parencite[vgl.][]{jones1972statistical}. Der wert steigt mit mit der Frequenz des Wortes in einem Dokument und sinkt mit der Anzahl an Dokumenten in denen das Wort vorkommt.
 
 \subsection{Dynamisches LDA}
 
-Für das \gls{dlda} wurden die 1410 Patente des Datensatzes in die 14 Zeitabschnitte von 2004 bis 2017 aufgeteilt. Jeder Zeitabschnitt ist ein Jahr lang und enthält die Patente deren APD in jenes Jahr fällt. Jeder Zeitabschnitt enthält 1 bis 173 Patente. Die Jahre 2004 und 2017 enthalten mit 1 und 13 Patenten die wenigsten im Datensatz. Damit die Ergebnisse des \gls{dlda} denen des \gls{lda} vergleichbar sind wurden für die Uni- und Bigramme wieder Modelle mit 83 und 51 Themen erstellt.
-
-%\section{Gibbs Sampling}
+Für das \gls{dlda} wurden die 1410 Patente des Datensatzes in die 14 Zeitabschnitte von 2004 bis 2017 aufgeteilt. Jeder Zeitabschnitt ist ein Jahr lang und enthält die Patente deren Anmeldedatum in jenes Jahr fällt. Jeder Zeitabschnitt enthält 1 bis 173 Patente. Die Jahre 2004 und 2017 enthalten mit 1 und 13 Patenten die wenigsten im Datensatz. Besonders vorteilhaft ist, dass der Code so modifiziert werden konnte, dass die Ergebnisse des \gls{lda} mit denen des \gls{dlda} vergleichbar sind. Das \gls{lda} Modell wurde als Eingabewert für den \gls{dlda} verwendet. So sind die Themen von \gls{lda} und \gls{dlda} die gleichen.
 
 
